@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
@@ -6,11 +8,9 @@
 #    By: jecaudal <jecaudal@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/19 16:26:09 by jecaudal          #+#    #+#              #
-#    Updated: 2020/08/21 14:34:14 by jecaudal         ###   ########.fr        #
+#    Updated: 2020/08/21 17:40:26 by jecaudal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
-
-#!/bin/bash
 
 #>
 ## This script is to setup many services in Minikube.
@@ -58,49 +58,44 @@ fun_install_docker ()
 		fi
 		if [ ! -d "$HOME/.docker" ] && [ ! -L "$HOME/.docker" ]
 		then
-			printf "${Error} : Docker directory $HOME/.docker not found.\n"
-			printf "${Note} : Launch Docker app (open /Applications/Docker.app) and quit it. Next rerun this script.\n"
-			exit 1
+			rm -rf ${Goinfre_path}/.docker
+			mkdir "${Goinfre_path}/.docker"
+			ln -sf ${Goinfre_path}/.docker $HOME/.docker
 		fi
 		if [ -L "$HOME/.docker" ] && [ ! -d "${Goinfre_path}/.docker" ]
 		then
-			rm -rf $HOME/.docker
-			printf "${Error} : Targeted docker user directory in goinfre not found.\n"
-			printf "${Note} : Start and stop Docker, next relaunch this script.\n"
-			exit 1
+			mkdir ${Goinfre_path}/.docker
 		fi
 		if [ -d "$HOME/.docker" ] && [ ! -L "$HOME/.docker" ]
 		then
 			mv $HOME/.docker ${Goinfre_path}/
 			ln -sf ${Goinfre_path}/.docker $HOME/.docker
-			printf "✅ : Docker setup 1/2.\n"
 		fi
+		printf "✅ : Docker setup 1/2.\n"
 		if [ ! -d "$HOME/Library/Containers/com.docker.docker" ] && [ ! -L "$HOME/Library/Containers/com.docker.docker" ]
 		then
-			printf "${Error} : Containers directory $HOME/Library/Containers/com.docker.docker not found.\n"
-			printf "${Note} : Launch Docker app (open /Applications/Docker.app) and quit it. Next rerun this script.\n"
-			exit 1
+			mkdir ${Goinfre_path}/com.docker.docker
+			ln -sf ${Goinfre_path}/com.docker.docker $HOME/Library/Containers/com.docker.docker
 		fi
 		if [ -L "$HOME/Library/Containers/com.docker.docker" ] && [ ! -d "${Goinfre_path}/com.docker.docker" ]
 		then
-			rm -rf $HOME/Library/Containers/com.docker.docker
-			printf "${Error} : Targeted container directory in goinfre not found.\n"
-			printf "${Note} : Start and stop Docker, next relaunch this script.\n"
-			exit 1
+			mkdir ${Goinfre_path}/com.docker.docker
 		fi
 		if [ -d "$HOME/Library/Containers/com.docker.docker" ] && [ ! -L "$HOME/Library/Containers/com.docker.docker" ]
 		then
 			rm -rf $HOME/Library/Containers/com.docker.docker
-			mkdir $HOME/Library/Containers/com.docker.docker
-			mv $HOME/Library/Containers/com.docker.docker ${Goinfre_path}/
+			rm -rf ${Goinfre_path}/com.docker.docker
 			ln -sf ${Goinfre_path}/com.docker.docker $HOME/Library/Containers/com.docker.docker
-			printf "✅ : Docker setup 2/2.\n"
 		fi
+		printf "✅ : Docker setup 2/2.\n"
 	fi
 	if [ "$1" = "42linux" ]
 	then
 		# 42 linux part to check if Docker is installed and if not the installation.
 		printf "${Note} : Installation of Docker...\n"
+		brew install docker &
+		fun_load_anim $!
+		printf "\n"
 	fi
 	printf "✅ : Docker is correctly setup !\n"
 }
@@ -141,21 +136,29 @@ fun_install_minikube ()
 
 fun_install_brew ()
 {
-	rm -rf $HOME/.brew >/dev/null &
-	fun_load_anim $!
-	printf "✅ 1/5 Done\n"
-	git clone --depth=1 https://github.com/Homebrew/brew $HOME/.brew 2> /dev/null &
-	fun_load_anim $!
-	printf "✅ 2/5 Done\n"
-	export PATH=$HOME/.brew/bin:$PATH > /dev/null &
-	fun_load_anim $!
-	printf "✅ 3/5 Done\n"
-	brew update &> /dev/null &
-	fun_load_anim $!
-	printf "✅ 4/5 Done\n"
-	echo "export PATH=$HOME/.brew/bin:$PATH" >> ~/.zshrc &
-	fun_load_anim $!
-	printf "✅ 5/5 Done\n"
+	if [ "$1" = "42mac" ]
+	then
+		rm -rf $HOME/.brew >/dev/null &
+		fun_load_anim $!
+		printf "✅ 1/5 Done\n"
+		git clone --depth=1 https://github.com/Homebrew/brew $HOME/.brew 2> /dev/null &
+		fun_load_anim $!
+		printf "✅ 2/5 Done\n"
+		export PATH=$HOME/.brew/bin:$PATH > /dev/null &
+		fun_load_anim $!
+		printf "✅ 3/5 Done\n"
+		brew update &> /dev/null &
+		fun_load_anim $!
+		printf "✅ 4/5 Done\n"
+		echo "export PATH=$HOME/.brew/bin:$PATH" >> ~/.zshrc &
+		fun_load_anim $!
+		printf "✅ 5/5 Done\n"
+	elif [ "$1" = "42linux" ]
+	then
+		/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)" 2> /dev/null
+		echo "export PATH=$HOME/.brew/bin:$PATH" >> ~/.zshrc
+		printf "✅ : Brew installed !"
+	fi
 }
 
 fun_check_brew ()
@@ -164,7 +167,7 @@ fun_check_brew ()
 	if [ $? = 127 ]
 	then
 		printf "${Warning} : Brew is not installed.\n"
-		read -p 'Do you want to install it ? (N|[Y]) : '
+		read -p 'Do you want to install it ? (N|[Y]) : ' REPLY
 		if [ "${REPLY}" = "Y" ] || [ "${REPLY}" = "y" ] || [ "${REPLY}" = "" ]
 		then
 			printf "🤖 : Please wait during installation of brew...\n"
@@ -225,11 +228,12 @@ fun_parsing_arg $1
 
 # Setup all software needed for this project
 # =============
-fun_check_vbox $1
+
+fun_check_brew $1
 
 if [ "$1" = "42mac" ]
 then
-	fun_check_brew
+	fun_check_vbox $1
 	fun_install_minikube
 fi
 
