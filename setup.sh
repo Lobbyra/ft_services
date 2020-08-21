@@ -155,8 +155,9 @@ fun_install_brew ()
 		printf "✅ 5/5 Done\n"
 	elif [ "$1" = "42linux" ]
 	then
-		/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)" 2> /dev/null
-		echo "export PATH=$HOME/.brew/bin:$PATH" >> ~/.zshrc
+		/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+		echo "export PATH=/home/linuxbrew/.linuxbrew/bin:$PATH" >> ~/.zshrc
+		export PATH=/home/linuxbrew/.linuxbrew/bin:$PATH
 		printf "✅ : Brew installed !"
 	fi
 }
@@ -171,7 +172,7 @@ fun_check_brew ()
 		if [ "${REPLY}" = "Y" ] || [ "${REPLY}" = "y" ] || [ "${REPLY}" = "" ]
 		then
 			printf "🤖 : Please wait during installation of brew...\n"
-			fun_install_brew
+			fun_install_brew $1
 		else
 			printf "${Error} : Brew is needed to install componements.\n"
 			exit 1
