@@ -123,15 +123,28 @@ fun_install_minikube ()
 		brew install minikube > /dev/null &
 		fun_load_anim $!
 		printf "\b✅ : minikube installed.\n"
+		if [ -d ~/.minikube ] && [ ! -L ~/.minikube ]
+		then
+			mv ~/.minikube ${Goinfre_path}/
+			ln -sf ${Goinfre_path}/.minikube ~/.minikube
+		elif [ -L ~/.minikube ] && [ ! -d ${Goinfre_path}/.minikube ]
+		then
+			mkdir ${Goinfre_path}/.minikube
+		elif [ ! -d ~/.minikube ]
+		then
+			mkdir ${Goinfre_path}/.minikube
+			ln -sf ${Goinfre_path}/.minikube ~/.minikube
+		fi
 	elif [ $? = 0 ]
 	then
 		printf "minikube already installed.\n"
+		return 0
 	fi
 	if [ "$(minikube config get vm-driver)" != "virtualbox" ]
 	then
 		minikube config set vm-driver virtualbox
-		printf "\b✅ : minikube configured !\n"
 	fi
+	printf "\b✅ : minikube configured !\n"
 }
 
 fun_install_brew ()
