@@ -93,7 +93,7 @@ fun_install_docker ()
 	then
 		# 42 linux part to check if Docker is installed and if not the installation.
 		printf "${Note} : Installation of Docker...\n"
-		brew install docker &
+		brew install docker &> /dev/null &
 		fun_load_anim $!
 		printf "\n"
 	fi
@@ -155,7 +155,8 @@ fun_install_brew ()
 		printf "✅ 5/5 Done\n"
 	elif [ "$1" = "42linux" ]
 	then
-		/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+		echo "\n" | /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)" &> /dev/null &
+		fun_load_anim $!
 		echo "export PATH=/home/linuxbrew/.linuxbrew/bin:$PATH" >> ~/.zshrc
 		export PATH=/home/linuxbrew/.linuxbrew/bin:$PATH
 		printf "✅ : Brew installed !"
