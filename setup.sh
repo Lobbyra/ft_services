@@ -123,17 +123,20 @@ fun_install_minikube ()
 		brew install minikube > /dev/null &
 		fun_load_anim $!
 		printf "\b✅ : minikube installed.\n"
-		if [ -d ~/.minikube ] && [ ! -L ~/.minikube ]
+		if [ "$1" = "42mac" ]
 		then
-			mv ~/.minikube ${Goinfre_path}/
-			ln -sf ${Goinfre_path}/.minikube ~/.minikube
-		elif [ -L ~/.minikube ] && [ ! -d ${Goinfre_path}/.minikube ]
-		then
-			mkdir ${Goinfre_path}/.minikube
-		elif [ ! -d ~/.minikube ]
-		then
-			mkdir ${Goinfre_path}/.minikube
-			ln -sf ${Goinfre_path}/.minikube ~/.minikube
+			if [ -d ~/.minikube ] && [ ! -L ~/.minikube ]
+			then
+				mv ~/.minikube ${Goinfre_path}/
+				ln -sf ${Goinfre_path}/.minikube ~/.minikube
+			elif [ -L ~/.minikube ] && [ ! -d ${Goinfre_path}/.minikube ]
+			then
+				mkdir ${Goinfre_path}/.minikube
+			elif [ ! -d ~/.minikube ]
+			then
+				mkdir ${Goinfre_path}/.minikube
+				ln -sf ${Goinfre_path}/.minikube ~/.minikube
+			fi
 		fi
 	elif [ $? = 0 ]
 	then
@@ -249,8 +252,8 @@ fun_check_brew $1
 if [ "$1" = "42mac" ]
 then
 	fun_check_vbox $1
-	fun_install_minikube
 fi
+fun_install_minikube
 
 fun_install_docker $1
 # =============
