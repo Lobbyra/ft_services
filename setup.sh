@@ -46,57 +46,45 @@ Goinfre_path="/Volumes/Storage/goinfre/$USER"
 
 fun_install_docker ()
 {
-	if [ "$1" = "42mac" ]
+	printf "🤖 : Checking your Docker setup...\n"
+	if [ ! -d "/Applications/Docker.app" ]
 	then
-		# 42 mac part to setup Docker
-		printf "🤖 : Checking your Docker setup...\n"
-		if [ ! -d "/Applications/Docker.app" ]
-		then
-			printf "${Error} : Docker isn't installed on your computer.\n"
-			printf "${Note} : Install it via Managed Software Center and rerun the script.\n"
-			exit 1
-		fi
-		if [ ! -d "$HOME/.docker" ] && [ ! -L "$HOME/.docker" ]
-		then
-			rm -rf ${Goinfre_path}/.docker
-			mkdir "${Goinfre_path}/.docker"
-			ln -sf ${Goinfre_path}/.docker $HOME/.docker
-		fi
-		if [ -L "$HOME/.docker" ] && [ ! -d "${Goinfre_path}/.docker" ]
-		then
-			mkdir ${Goinfre_path}/.docker
-		fi
-		if [ -d "$HOME/.docker" ] && [ ! -L "$HOME/.docker" ]
-		then
-			mv $HOME/.docker ${Goinfre_path}/
-			ln -sf ${Goinfre_path}/.docker $HOME/.docker
-		fi
-		printf "✅ : Docker setup 1/2.\n"
-		if [ ! -d "$HOME/Library/Containers/com.docker.docker" ] && [ ! -L "$HOME/Library/Containers/com.docker.docker" ]
-		then
-			mkdir ${Goinfre_path}/com.docker.docker
-			ln -sf ${Goinfre_path}/com.docker.docker $HOME/Library/Containers/com.docker.docker
-		fi
-		if [ -L "$HOME/Library/Containers/com.docker.docker" ] && [ ! -d "${Goinfre_path}/com.docker.docker" ]
-		then
-			mkdir ${Goinfre_path}/com.docker.docker
-		fi
-		if [ -d "$HOME/Library/Containers/com.docker.docker" ] && [ ! -L "$HOME/Library/Containers/com.docker.docker" ]
-		then
-			rm -rf $HOME/Library/Containers/com.docker.docker
-			rm -rf ${Goinfre_path}/com.docker.docker
-			ln -sf ${Goinfre_path}/com.docker.docker $HOME/Library/Containers/com.docker.docker
-		fi
-		printf "✅ : Docker setup 2/2.\n"
+		printf "${Error} : Docker isn't installed on your computer.\n"
+		printf "${Note} : Install it via Managed Software Center and rerun the script.\n"
+		exit 1
 	fi
-	if [ "$1" = "42linux" ]
+	if [ ! -d "$HOME/.docker" ] && [ ! -L "$HOME/.docker" ]
 	then
-		# 42 linux part to check if Docker is installed and if not the installation.
-		printf "${Note} : Installation of Docker...\n"
-		brew install docker &> /dev/null &
-		fun_load_anim $!
-		printf "\n"
+		rm -rf ${Goinfre_path}/.docker
+		mkdir "${Goinfre_path}/.docker"
+		ln -sf ${Goinfre_path}/.docker $HOME/.docker
 	fi
+	if [ -L "$HOME/.docker" ] && [ ! -d "${Goinfre_path}/.docker" ]
+	then
+		mkdir ${Goinfre_path}/.docker
+	fi
+	if [ -d "$HOME/.docker" ] && [ ! -L "$HOME/.docker" ]
+	then
+		mv $HOME/.docker ${Goinfre_path}/
+		ln -sf ${Goinfre_path}/.docker $HOME/.docker
+	fi
+	printf "✅ : Docker setup 1/2.\n"
+	if [ ! -d "$HOME/Library/Containers/com.docker.docker" ] && [ ! -L "$HOME/Library/Containers/com.docker.docker" ]
+	then
+		mkdir ${Goinfre_path}/com.docker.docker
+		ln -sf ${Goinfre_path}/com.docker.docker $HOME/Library/Containers/com.docker.docker
+	fi
+	if [ -L "$HOME/Library/Containers/com.docker.docker" ] && [ ! -d "${Goinfre_path}/com.docker.docker" ]
+	then
+		mkdir ${Goinfre_path}/com.docker.docker
+	fi
+	if [ -d "$HOME/Library/Containers/com.docker.docker" ] && [ ! -L "$HOME/Library/Containers/com.docker.docker" ]
+	then
+		rm -rf $HOME/Library/Containers/com.docker.docker
+		rm -rf ${Goinfre_path}/com.docker.docker
+		ln -sf ${Goinfre_path}/com.docker.docker $HOME/Library/Containers/com.docker.docker
+	fi
+	printf "✅ : Docker setup 2/2.\n"
 	printf "✅ : Docker is correctly setup !\n"
 }
 
@@ -123,25 +111,22 @@ fun_install_minikube ()
 		brew install minikube > /dev/null &
 		fun_load_anim $!
 		printf "\b✅ : minikube installed.\n"
-		if [ "$1" = "42mac" ]
-		then
-			if [ -d ~/.minikube ] && [ ! -L ~/.minikube ]
-			then
-				mv ~/.minikube ${Goinfre_path}/
-				ln -sf ${Goinfre_path}/.minikube ~/.minikube
-			elif [ -L ~/.minikube ] && [ ! -d ${Goinfre_path}/.minikube ]
-			then
-				mkdir ${Goinfre_path}/.minikube
-			elif [ ! -d ~/.minikube ]
-			then
-				mkdir ${Goinfre_path}/.minikube
-				ln -sf ${Goinfre_path}/.minikube ~/.minikube
-			fi
-		fi
 	elif [ $? = 0 ]
 	then
 		printf "minikube already installed.\n"
 		return 0
+	fi
+	if [ -d ~/.minikube ] && [ ! -L ~/.minikube ]
+	then
+		mv ~/.minikube ${Goinfre_path}/
+		ln -sf ${Goinfre_path}/.minikube ~/.minikube
+	elif [ -L ~/.minikube ] && [ ! -d ${Goinfre_path}/.minikube ]
+	then
+		mkdir ${Goinfre_path}/.minikube
+	elif [ ! -d ~/.minikube ]
+	then
+		mkdir ${Goinfre_path}/.minikube
+		ln -sf ${Goinfre_path}/.minikube ~/.minikube
 	fi
 	if [ "$(minikube config get vm-driver)" != "virtualbox" ]
 	then
@@ -152,31 +137,21 @@ fun_install_minikube ()
 
 fun_install_brew ()
 {
-	if [ "$1" = "42mac" ]
-	then
-		rm -rf $HOME/.brew >/dev/null &
-		fun_load_anim $!
-		printf "✅ 1/5 Done\n"
-		git clone --depth=1 https://github.com/Homebrew/brew $HOME/.brew 2> /dev/null &
-		fun_load_anim $!
-		printf "✅ 2/5 Done\n"
-		export PATH=$HOME/.brew/bin:$PATH > /dev/null &
-		fun_load_anim $!
-		printf "✅ 3/5 Done\n"
-		brew update &> /dev/null &
-		fun_load_anim $!
-		printf "✅ 4/5 Done\n"
-		echo "export PATH=$HOME/.brew/bin:$PATH" >> ~/.zshrc &
-		fun_load_anim $!
-		printf "✅ 5/5 Done\n"
-	elif [ "$1" = "42linux" ]
-	then
-		echo "\n" | /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)" &> /dev/null &
-		fun_load_anim $!
-		echo "export PATH=/home/linuxbrew/.linuxbrew/bin:$PATH" >> ~/.zshrc
-		export PATH=/home/linuxbrew/.linuxbrew/bin:$PATH
-		printf "✅ : Brew installed !\n"
-	fi
+	rm -rf $HOME/.brew >/dev/null &
+	fun_load_anim $!
+	printf "✅ 1/5 Done\n"
+	git clone --depth=1 https://github.com/Homebrew/brew $HOME/.brew 2> /dev/null &
+	fun_load_anim $!
+	printf "✅ 2/5 Done\n"
+	export PATH=$HOME/.brew/bin:$PATH > /dev/null &
+	fun_load_anim $!
+	printf "✅ 3/5 Done\n"
+	brew update &> /dev/null &
+	fun_load_anim $!
+	printf "✅ 4/5 Done\n"
+	echo "export PATH=$HOME/.brew/bin:$PATH" >> ~/.zshrc &
+	fun_load_anim $!
+	printf "✅ 5/5 Done\n"
 }
 
 fun_check_brew ()
@@ -202,16 +177,8 @@ fun_check_vbox ()
 	VBoxManage &> /dev/null
 	if [ $? != 0 ]
 	then
-		if [ "$1" = "42mac" ]
-		then
-			printf "${Error} : Vbox looks not installed on your 42mac, please install it via Managed Software Center.\n"
-			exit 1
-		fi
-		if [ "$1" = "42linux" ]
-		then
-			printf "${Warning} : Vbox is not installed on your Linux, installation of it starting...\n"
-			# Linux automatic installation of Vbox
-		fi
+		printf "${Error} : Vbox looks not installed on your 42mac, please install it via Managed Software Center.\n"
+		exit 1
 	else
 		printf "${Note} : Virtual box already installed.\n"
 	fi
@@ -247,15 +214,15 @@ fun_parsing_arg $1
 # Setup all software needed for this project
 # =============
 
-fun_check_brew $1
 
 if [ "$1" = "42mac" ]
 then
-	fun_check_vbox $1
+	fun_check_brew
+	fun_check_vbox
+	fun_install_minikube
+	fun_install_docker
 fi
-fun_install_minikube
 
-fun_install_docker $1
 # =============
 
 # Docker images creation
