@@ -6,9 +6,12 @@
 #    By: jecaudal <jecaudal@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/22 17:40:08 by jecaudal          #+#    #+#              #
-#    Updated: 2020/08/22 17:51:30 by jecaudal         ###   ########.fr        #
+#    Updated: 2020/08/22 23:10:13 by jecaudal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
+
+# Creating SSL keys
+openssl req -x509 -nodes -subj '/CN=localhost' -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/server.key -out /etc/ssl/certs/server.crt
 
 # Nginx starting
 openrc

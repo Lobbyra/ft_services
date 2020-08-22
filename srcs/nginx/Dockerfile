@@ -6,7 +6,7 @@
 #    By: jecaudal <jecaudal@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/22 16:43:03 by jecaudal          #+#    #+#              #
-#    Updated: 2020/08/22 22:45:22 by jecaudal         ###   ########.fr        #
+#    Updated: 2020/08/22 23:07:45 by jecaudal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ ADD		srcs/ /tmp/ft_services_payload
 WORKDIR	/tmp/ft_services_payload
 
 # Install core services
-RUN		apk add openrc nginx
+RUN		apk add openrc nginx openssl
 
 # Nginx setup
 RUN		adduser -D -g 'www' www \
@@ -30,8 +30,6 @@ RUN		adduser -D -g 'www' www \
 # Moving necessary files
 ADD		srcs/nginx.conf /etc/nginx/
 ADD		srcs/index.html /www
-ADD		srcs/server.crt /etc/ssl/certs/
-ADD		srcs/server.key /etc/ssl/private/
 
 EXPOSE	80 443 301
 
