@@ -159,7 +159,7 @@ fun_install_brew ()
 		fun_load_anim $!
 		echo "export PATH=/home/linuxbrew/.linuxbrew/bin:$PATH" >> ~/.zshrc
 		export PATH=/home/linuxbrew/.linuxbrew/bin:$PATH
-		printf "✅ : Brew installed !"
+		printf "✅ : Brew installed !\n"
 	fi
 }
 
