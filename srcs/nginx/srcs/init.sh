@@ -6,7 +6,7 @@
 #    By: jecaudal <jecaudal@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/22 17:40:08 by jecaudal          #+#    #+#              #
-#    Updated: 2020/08/22 23:10:13 by jecaudal         ###   ########.fr        #
+#    Updated: 2020/08/24 12:10:36 by jecaudal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,6 +16,6 @@ openssl req -x509 -nodes -subj '/CN=localhost' -days 365 -newkey rsa:2048 -keyou
 # Nginx starting
 openrc
 touch /run/openrc/softlevel
-service nginx start
+service nginx start 2> /dev/null
 
 tail -f /dev/null	# Freeze command to avoid end of container
