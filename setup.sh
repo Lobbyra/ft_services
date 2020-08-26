@@ -207,13 +207,29 @@ fun_parsing_arg ()
 		exit 1
 	fi
 }
+
+fun_build_images ()
+{
+	arr_img_dir=()
+	while IFS= read -r line; do
+		arr_img_dir+=( "$line" )
+	done < <(find srcs -d 1 -type d)
+	for i in ${arr_img_dir[@]}
+	do
+		printf "🤖 : Building $(echo $i | cut -d "/" -f 2) image.\n"
+		docker build $i -t $(echo $i | cut -d "/" -f 2)_img > /dev/null &
+		fun_load_anim $!
+	done
+}
+
 # ====================================================================================================================
 
 fun_parsing_arg $1
 
 # Setup all software needed for this project
-# =============
+# ============================================
 
+printf "🤖 : Checkup of your configuration...\n"
 
 if [ "$1" = "42mac" ]
 then
@@ -223,14 +239,46 @@ then
 	fun_install_docker
 fi
 
-# =============
+printf "✅ : Your configuration is ready !\n"
+
+# ============================================
+
+# Minikube starting
+printf "🤖 : Let's launch this images to the moon ! 🚀 \n"
+printf "🤖 : Minikube will be started : Continue ? (N|[Y]) : "
+read answer
+printf "\n"
+if [ "$answer" != "Y" ] && [ "$answer" != "" ]
+then
+	printf "🤖 : You need to start minikube to launch images.\n"
+	exit 0
+else
+	eval $(minikube docker-env)
+	minikube start > /dev/null &
+	fun_load_anim $!
+	printf "✅ : Minikube started !\n"
+fi
 
 # Docker images creation
 # =============
+printf "🤖 : Docker image will be created : Continue ? (N|[Y]) : "
+read answer
+printf "\n"
+if [ "$answer" != "Y" ] && [ "$answer" != "" ]
+then
+	printf "🤖 : You need this images to start services.\n"
+	exit 0
+else
+	fun_build_images
+	printf "✅ : Images created !\n"
+fi
+
 # =============
 
 # K8s deployements and setup
 # =============
+
+
 #-Secret file creation and applyment
 #-Deployements of pods
 

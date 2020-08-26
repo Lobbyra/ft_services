@@ -6,7 +6,7 @@
 #    By: jecaudal <jecaudal@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/22 17:40:08 by jecaudal          #+#    #+#              #
-#    Updated: 2020/08/24 12:10:36 by jecaudal         ###   ########.fr        #
+#    Updated: 2020/08/26 18:51:53 by jecaudal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,4 +18,4 @@ openrc
 touch /run/openrc/softlevel
 service nginx start 2> /dev/null
 
-tail -f /dev/null	# Freeze command to avoid end of container
+tail -F /dev/null
