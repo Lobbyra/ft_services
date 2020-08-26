@@ -1,12 +1,12 @@
 # **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
-#    Dockerfile                                         :+:      :+:    :+:    #
+#    init.sh                                            :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
 #    By: jecaudal <jecaudal@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2020/08/24 18:13:28 by jecaudal          #+#    #+#              #
-#    Updated: 2020/08/26 16:29:40 by jecaudal         ###   ########.fr        #
+#    Created: 2020/08/25 18:06:13 by jecaudal          #+#    #+#              #
+#    Updated: 2020/08/26 15:16:29 by jecaudal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,26 +16,15 @@
 # DB_NAME <- Name of the database you want to complete with telegraf.
 #			/!\ The DB is created if needed.
 
-FROM	alpine
+openrc
+touch /run/openrc/softlevel
+service influxdb start 
+sleep 2
+influx << EOF
+CREATE USER admin WITH PASSWORD '$INFLUX_ADM_PASS' WITH ALL PRIVILEGES;
+CREATE USER telegraf WITH PASSWORD '$INFLUX_TELE_PASS' WITH ALL PRIVILEGES;
+EOF
 
-ADD		srcs/ /root
+envsubst '${INFLUX_TELE_PASS}' < /root/telegraf.conf > /etc/telegraf/telegraf.conf
 
-RUN		apk add openrc influxdb gettext
-
-# Fix libc dependency to run the grafana binary
-RUN		mkdir /lib64 && ln -s /lib/libc.musl-x86_64.so.1 /lib64/ld-linux-x86-64.so.2
-
-# --- Download and install telegraf
-# Download :
-RUN		cd /tmp \
-		&& wget https://dl.influxdata.com/telegraf/releases/telegraf-1.15.2_linux_amd64.tar.gz \
-		&& tar -zxf telegraf-1.15.2_linux_amd64.tar.gz \
-		&& mv telegraf-1.15.2 telegraf
-
-# Installation :
-RUN		cp -rf /tmp/telegraf/usr/* /usr \
-		&& cp -rf /tmp/telegraf/etc/* /etc
-
-EXPOSE	8086
-
-CMD [ "/bin/ash", "/root/init.sh" ]
+telegraf
