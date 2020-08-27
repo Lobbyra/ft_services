@@ -44,48 +44,15 @@ Goinfre_path="/Volumes/Storage/goinfre/$USER"
 # Functions
 # ===================================================================================================================
 
-fun_install_docker ()
+fun_check_docker ()
 {
-	printf "🤖 : Checking your Docker setup...\n"
-	if [ ! -d "/Applications/Docker.app" ]
+	docker &> /dev/null
+	if [ $? = 127 ]
 	then
-		printf "${Error} : Docker isn't installed on your computer.\n"
-		printf "${Note} : Install it via Managed Software Center and rerun the script.\n"
+		printf "${Error} : Docker looks like not installed on your 42mac.\n"
+		printf "${Note} : Please install it via managed software center.\n"
 		exit 1
 	fi
-	if [ ! -d "$HOME/.docker" ] && [ ! -L "$HOME/.docker" ]
-	then
-		rm -rf ${Goinfre_path}/.docker
-		mkdir "${Goinfre_path}/.docker"
-		ln -sf ${Goinfre_path}/.docker $HOME/.docker
-	fi
-	if [ -L "$HOME/.docker" ] && [ ! -d "${Goinfre_path}/.docker" ]
-	then
-		mkdir ${Goinfre_path}/.docker
-	fi
-	if [ -d "$HOME/.docker" ] && [ ! -L "$HOME/.docker" ]
-	then
-		mv $HOME/.docker ${Goinfre_path}/
-		ln -sf ${Goinfre_path}/.docker $HOME/.docker
-	fi
-	printf "✅ : Docker setup 1/2.\n"
-	if [ ! -d "$HOME/Library/Containers/com.docker.docker" ] && [ ! -L "$HOME/Library/Containers/com.docker.docker" ]
-	then
-		mkdir ${Goinfre_path}/com.docker.docker
-		ln -sf ${Goinfre_path}/com.docker.docker $HOME/Library/Containers/com.docker.docker
-	fi
-	if [ -L "$HOME/Library/Containers/com.docker.docker" ] && [ ! -d "${Goinfre_path}/com.docker.docker" ]
-	then
-		mkdir ${Goinfre_path}/com.docker.docker
-	fi
-	if [ -d "$HOME/Library/Containers/com.docker.docker" ] && [ ! -L "$HOME/Library/Containers/com.docker.docker" ]
-	then
-		rm -rf $HOME/Library/Containers/com.docker.docker
-		rm -rf ${Goinfre_path}/com.docker.docker
-		ln -sf ${Goinfre_path}/com.docker.docker $HOME/Library/Containers/com.docker.docker
-	fi
-	printf "✅ : Docker setup 2/2.\n"
-	printf "✅ : Docker is correctly setup !\n"
 }
 
 fun_load_anim ()
@@ -132,6 +99,7 @@ fun_install_minikube ()
 	then
 		minikube config set vm-driver virtualbox
 	fi
+	ln -sf ${Goinfre_path}/.minikube ~/.minikube
 	printf "\b✅ : minikube configured !\n"
 }
 
@@ -206,6 +174,16 @@ fun_parsing_arg ()
 		fun_print_usage
 		exit 1
 	fi
+	if [ "$2" = "--goinfre" ] && [ "$#" = 3 ]
+	then
+		Goinfre_path=$3
+		printf "Goinfre path changed to ${Goinfre_path}.\n"
+		if [ ! -d ${Goinfre_path} ]
+		then
+			printf "${Error} : The goinfre path specified does not exist.\n"
+			exit 1
+		fi
+	fi
 }
 
 fun_build_images ()
@@ -224,7 +202,7 @@ fun_build_images ()
 
 # ====================================================================================================================
 
-fun_parsing_arg $1
+fun_parsing_arg $1 $2 $3
 
 # Setup all software needed for this project
 # ============================================
@@ -236,7 +214,7 @@ then
 	fun_check_brew
 	fun_check_vbox
 	fun_install_minikube
-	fun_install_docker
+	fun_check_docker
 fi
 
 printf "✅ : Your configuration is ready !\n"
@@ -253,9 +231,20 @@ then
 	printf "🤖 : You need to start minikube to launch images.\n"
 	exit 0
 else
-	eval $(minikube docker-env)
 	minikube start > /dev/null &
 	fun_load_anim $!
+	eval $(minikube docker-env)
+	kubectl get configmap kube-proxy -n kube-system -o yaml | \
+	sed -e "s/strictARP: false/strictARP: true/" | \
+	kubectl apply -f - -n kube-system
+	kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manifests/namespace.yaml
+	kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manifests/metallb.yaml
+	kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)"
+	if [ $? != 0 ]
+	then
+		printf "${Error} : Minikube failed to start. Please solve error(s) and restart the script.\n"
+		exit 1
+	fi
 	printf "✅ : Minikube started !\n"
 fi
 
@@ -278,6 +267,18 @@ fi
 # K8s deployements and setup
 # =============
 
+printf "🤖 : Finally let's deploy all this stuff ! : Continue ? (N|[Y]) : "
+read answer
+printf "\n"
+if [ "$answer" != "Y" ] && [ "$answer" != "" ]
+then
+	printf "🤖 : You need to deploy if you want your services.\n"
+	exit 0
+else
+	kubectl apply -f srcs/metallb-config.yaml
+	kubectl apply -f srcs/nginx/deployment.yaml
+	printf "✅ : Deployment finished !\n"
+fi
 
 #-Secret file creation and applyment
 #-Deployements of pods
