@@ -5,50 +5,71 @@
 #                                                     +:+ +:+         +:+      #
 #    By: jecaudal <jecaudal@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2020/08/26 18:19:41 by jecaudal          #+#    #+#              #
-#    Updated: 2020/08/28 18:09:45 by jecaudal         ###   ########.fr        #
+#    Created: 2020/08/28 15:48:53 by jecaudal          #+#    #+#              #
+#    Updated: 2020/08/28 18:32:17 by jecaudal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-influx
+  namespace: default
+  labels:
+    app: pvc-influx
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nginx
+  name: dep-influx
 spec:
   selector:
     matchLabels:
-      app: nginx
+      app: dep-influx
   template:
     metadata:
       labels:
-        app: nginx
+        app: dep-influx
     spec:
       containers:
-      - name: nginx
-        image: img-nginx
+      - name: dep-influx
+        image: img-influxdb
+        env:
+          - name: INFLUX_ADM_PASS
+            value: 68R7FR5
+          - name: INFLUX_TELE_PASS
+            value: HUGB7T67B
         resources:
           limits:
             memory: "128Mi"
             cpu: "500m"
+        volumeMounts:
+          - name: pv-influx
+            mountPath: /var/lib/influxdb
         imagePullPolicy: Never
         ports:
-        - containerPort: 80
-        - containerPort: 443
+        - containerPort: 8086
+      volumes:
+        - name: pv-influx
+          persistentVolumeClaim:
+            claimName: pvc-influx
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: nginx-service
+  name: svc-influx
 spec:
+  type: ClusterIP
   selector:
-    app: nginx
-  type: LoadBalancer
+    app: dep-influx
   ports:
-    - name: http
-      protocol: TCP
-      port: 80
-      targetPort: 80
-    - name: https
-      protocol: TCP
-      port: 443
-      targetPort: 443
+  - name: port-influxdb
+    port: 8086
+    targetPort: 8086
+    protocol: TCP

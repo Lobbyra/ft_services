@@ -195,7 +195,7 @@ fun_build_images ()
 	for i in ${arr_img_dir[@]}
 	do
 		printf "🤖 : Building $(echo $i | cut -d "/" -f 2) image.\n"
-		docker build $i -t $(echo $i | cut -d "/" -f 2)_img > /dev/null &
+		docker build $i -t img-$(echo $i | cut -d "/" -f 2) > /dev/null &
 		fun_load_anim $!
 	done
 }
