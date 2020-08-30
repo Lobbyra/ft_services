@@ -6,7 +6,7 @@
 #    By: jecaudal <jecaudal@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/24 18:13:13 by jecaudal          #+#    #+#              #
-#    Updated: 2020/08/26 15:36:36 by jecaudal         ###   ########.fr        #
+#    Updated: 2020/08/30 14:05:03 by Lobbyra          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,6 +31,8 @@ RUN		cd /tmp \
 # Installation
 RUN		ln -s /root/grafana/bin/grafana-cli /usr/bin \
 		&& ln -s /root/grafana/bin/grafana-server /usr/bin
+	
+VOLUME	[ "/root/grafana/data" ]
 
 EXPOSE	3000
 

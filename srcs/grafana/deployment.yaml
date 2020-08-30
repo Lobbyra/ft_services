@@ -3,60 +3,55 @@
 #                                                         :::      ::::::::    #
 #    deployment.yaml                                    :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jecaudal <jecaudal@student.42.fr>          +#+  +:+       +#+         #
+#    By: Lobbyra <jecaudal@student.42.fr>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2020/08/26 18:19:41 by jecaudal          #+#    #+#              #
-#    Updated: 2020/08/30 16:34:04 by Lobbyra          ###   ########.fr        #
+#    Created: 2020/08/30 13:53:42 by Lobbyra           #+#    #+#              #
+#    Updated: 2020/08/30 17:31:51 by Lobbyra          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: dep-nginx
+  name: dep-grafana
 spec:
   selector:
     matchLabels:
-      app: dep-nginx
+      app: dep-grafana
   template:
     metadata:
       labels:
-        app: dep-nginx
+        app: dep-grafana
     spec:
       containers:
-      - name: dep-nginx
-        image: img-nginx
-        volumeMounts:
-        - name: pv-nginx
-          mountPath: /www
+      - name: dep-grafana
+        image: img-grafana
         resources:
           limits:
-            memory: "128Mi"
+            memory: "512Mi"
             cpu: "500m"
+        volumeMounts:
+          - name: pv-grafana
+            mountPath: /root/grafana/data
         imagePullPolicy: Never
         ports:
-        - containerPort: 80
-        - containerPort: 443
+        - containerPort: 3000
       volumes:
-      - name: pv-nginx
+      - name: pv-grafana
         hostPath:
-          path: /mnt/nginx
+          path: /mnt/grafana
           type: Directory
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: svc-nginx
+  name: svc-grafana
 spec:
   selector:
-    app: dep-nginx
+    app: dep-grafana
   type: LoadBalancer
   ports:
-    - name: http
+    - name: grafana
       protocol: TCP
-      port: 80
-      targetPort: 80
-    - name: https
-      protocol: TCP
-      port: 443
-      targetPort: 443
+      port: 3000
+      targetPort: 3000

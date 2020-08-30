@@ -44,6 +44,13 @@ Goinfre_path="/Volumes/Storage/goinfre/$USER"
 # Functions
 # ===================================================================================================================
 
+fun_pushin_minikube ()
+{
+	minikube mount srcs/grafana/data:/mnt/grafana &> /dev/null &
+	minikube mount srcs/nginx/www:/mnt/nginx &> /dev/null &
+	minikube mount srcs/ftps/ftp:/mnt/ftp &> /dev/null &
+}
+
 fun_check_docker ()
 {
 	docker &> /dev/null
@@ -234,20 +241,20 @@ else
 	minikube start > /dev/null &
 	fun_load_anim $!
 	eval $(minikube docker-env)
-	kubectl get configmap kube-proxy -n kube-system -o yaml | \
-	sed -e "s/strictARP: false/strictARP: true/" | \
-	kubectl apply -f - -n kube-system
-	kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manifests/namespace.yaml
-	kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manifests/metallb.yaml
-	if [ "$(kubectl get secrets --namespace metallb-system | grep memberlist)" = "" ]
-	then
-		kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)"
-	fi
-	if [ $? != 0 ]
-	then
-		printf "${Error} : Minikube failed to start. Please solve error(s) and restart the script.\n"
-		exit 1
-	fi
+	#kubectl get configmap kube-proxy -n kube-system -o yaml | \
+	#sed -e "s/strictARP: false/strictARP: true/" | \
+	#kubectl apply -f - -n kube-system
+	#kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manifests/namespace.yaml
+	#kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manifests/metallb.yaml
+	#if [ "$(kubectl get secrets --namespace metallb-system | grep memberlist)" = "" ]
+	#then
+	#	kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)"
+	#fi
+	#if [ $? != 0 ]
+	#then
+	#	printf "${Error} : Minikube failed to start. Please solve error(s) and restart the script.\n"
+	#	exit 1
+	#fi
 	printf "✅ : Minikube started !\n"
 fi
 
@@ -280,6 +287,10 @@ then
 else
 	kubectl apply -f srcs/metallb-config.yaml
 	kubectl apply -f srcs/nginx/deployment.yaml
+	kubectl apply -f srcs/ftps/deployment.yaml
+	kubectl apply -f srcs/influxdb/deployment.yaml
+	kubectl apply -f srcs/grafana/deployment.yaml
+	fun_pushin_minikube
 	printf "✅ : Deployment finished !\n"
 fi
 

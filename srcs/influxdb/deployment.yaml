@@ -6,7 +6,7 @@
 #    By: jecaudal <jecaudal@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/28 15:48:53 by jecaudal          #+#    #+#              #
-#    Updated: 2020/08/28 18:32:17 by jecaudal         ###   ########.fr        #
+#    Updated: 2020/08/30 14:18:55 by Lobbyra          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,6 +41,8 @@ spec:
       - name: dep-influx
         image: img-influxdb
         env:
+          - name: DB_NAME
+            value: telegraf
           - name: INFLUX_ADM_PASS
             value: 68R7FR5
           - name: INFLUX_TELE_PASS
