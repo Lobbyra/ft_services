@@ -285,7 +285,7 @@ then
 	printf "🤖 : You need to deploy if you want your services.\n"
 	exit 0
 else
-	kubectl apply -f srcs/metallb-config.yaml
+	# kubectl apply -f srcs/metallb-config.yaml
 	kubectl apply -f srcs/nginx/deployment.yaml
 	kubectl apply -f srcs/ftps/deployment.yaml
 	kubectl apply -f srcs/influxdb/deployment.yaml
