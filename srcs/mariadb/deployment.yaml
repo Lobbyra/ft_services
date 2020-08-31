@@ -3,55 +3,51 @@
 #                                                         :::      ::::::::    #
 #    deployment.yaml                                    :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: Lobbyra <jecaudal@student.42.fr>           +#+  +:+       +#+         #
+#    By: jecaudal <jecaudal@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2020/08/30 13:53:42 by Lobbyra           #+#    #+#              #
-#    Updated: 2020/08/31 15:25:39 by jecaudal         ###   ########.fr        #
+#    Created: 2020/08/31 16:47:01 by jecaudal          #+#    #+#              #
+#    Updated: 2020/08/31 17:02:28 by jecaudal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: dep-grafana
+  name: dep-mariadb
 spec:
   selector:
     matchLabels:
-      app: dep-grafana
+      app: dep-mariadb
   template:
     metadata:
       labels:
-        app: dep-grafana
+        app: dep-mariadb
     spec:
       containers:
-      - name: dep-grafana
-        image: img-grafana
+      - name: dep-mariadb
+        image: img-mariadb
+        imagePullPolicy: Never
+        env:
+          - name: WP_USER_PASS
+            value: 4gf8d64f8g6
+          - name: ADMIN_PASS
+            value: s4d8fg6fsdfg
         resources:
           limits:
-            memory: "512Mi"
-            cpu: "1"
-        volumeMounts:
-          - name: pv-grafana
-            mountPath: /root/grafana/data
-        imagePullPolicy: Never
+            memory: "128Mi"
+            cpu: "500m"
         ports:
-        - containerPort: 3000
-      volumes:
-      - name: pv-grafana
-        hostPath:
-          path: /mnt/grafana
-          type: Directory
+        - containerPort: 3306
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: svc-grafana
+  name: svc-mariadb
 spec:
   selector:
-    app: dep-grafana
-  type: LoadBalancer
+    app: dep-mariadb
+  type: ClusterIP
   ports:
-    - name: grafana
-      protocol: TCP
-      port: 3000
-      targetPort: 3000
+  - port: 3306
+    targetPort: 3306
+

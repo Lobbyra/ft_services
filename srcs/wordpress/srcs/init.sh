@@ -6,13 +6,12 @@
 #    By: jecaudal <jecaudal@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/25 13:09:05 by jecaudal          #+#    #+#              #
-#    Updated: 2020/08/25 17:51:57 by jecaudal         ###   ########.fr        #
+#    Updated: 2020/08/31 17:33:09 by jecaudal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # --- Environnement Variables
-# WP_PASS <- password of the wordpress mysql account
-# MYSQL_IP <- IP or FQDN of mysql
+# WP_USER_PASS <- password of the wordpress mysql account
 
 cat << EOF > /srv/www/wp-config.php
 <?php
@@ -27,7 +26,7 @@ define('DB_USER', 'wpuser');
 define('DB_PASSWORD', '$WP_PASS');
 
 /** Adresse de l’hébergement MySQL. */
-define('DB_HOST', '$MYSQL_IP');
+define('DB_HOST', 'svc-mariadb.default.svc.cluster.local');
 
 /** Jeu de caractères à utiliser par la base de données lors de la création des tables. */
 define('DB_CHARSET', 'utf8');
@@ -58,5 +57,3 @@ require_once(ABSPATH . 'wp-settings.php');
 EOF
 
 php -S 0.0.0.0:5050 -t /srv/www/wordpress/wordpress
-
-tail -F /dev/null

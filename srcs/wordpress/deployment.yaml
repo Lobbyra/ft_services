@@ -1,0 +1,50 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    deployment.yaml                                    :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: jecaudal <jecaudal@student.42.fr>          +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2020/08/31 16:43:23 by jecaudal          #+#    #+#              #
+#    Updated: 2020/08/31 17:43:59 by jecaudal         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: svc-wordpress
+spec:
+  selector:
+    app: dep-wordpress
+  type: LoadBalancer
+  ports:
+  - port: 5050
+    targetPort: 5050
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dep-wordpress
+spec:
+  selector:
+    matchLabels:
+      app: dep-wordpress
+  template:
+    metadata:
+      labels:
+        app: dep-wordpress
+    spec:
+      containers:
+      - name: dep-wordpress
+        image: img-wordpress
+        imagePullPolicy: Never
+        env:
+          - name: WP_USER_PASS
+            value: 4gf8d64f8g6
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 5050

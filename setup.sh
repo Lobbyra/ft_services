@@ -238,7 +238,7 @@ then
 	printf "🤖 : You need to start minikube to launch images.\n"
 	exit 0
 else
-	minikube start > /dev/null &
+	minikube start &
 	fun_load_anim $!
 	eval $(minikube docker-env)
 	#kubectl get configmap kube-proxy -n kube-system -o yaml | \
@@ -250,11 +250,11 @@ else
 	#then
 	#	kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)"
 	#fi
-	#if [ $? != 0 ]
-	#then
-	#	printf "${Error} : Minikube failed to start. Please solve error(s) and restart the script.\n"
-	#	exit 1
-	#fi
+	if [ $? != 0 ]
+	then
+		printf "${Error} : Minikube failed to start. Please solve error(s) and restart the script.\n"
+		exit 1
+	fi
 	printf "✅ : Minikube started !\n"
 fi
 

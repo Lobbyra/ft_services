@@ -296,3 +296,31 @@ t=2020-08-30T17:26:07+0000 lvl=info msg="Starting DB migration" logger=migrator
 t=2020-08-30T17:26:07+0000 lvl=info msg="Starting plugin search" logger=plugins
 t=2020-08-30T17:26:07+0000 lvl=info msg="Registering plugin" logger=plugins name="Direct Input"
 t=2020-08-30T17:26:07+0000 lvl=info msg="HTTP Server Listen" logger=http.server address=[::]:3000 protocol=http subUrl= socket=
+t=2020-08-31T13:04:15+0000 lvl=info msg="Starting Grafana" logger=server version=7.1.5 commit=9893b8c53d branch=HEAD compiled=2020-08-25T08:27:17+0000
+t=2020-08-31T13:04:15+0000 lvl=info msg="Config loaded from" logger=settings file=/root/grafana/conf/defaults.ini
+t=2020-08-31T13:04:15+0000 lvl=info msg="Path Home" logger=settings path=/root/grafana
+t=2020-08-31T13:04:15+0000 lvl=info msg="Path Data" logger=settings path=/root/grafana/data
+t=2020-08-31T13:04:15+0000 lvl=info msg="Path Logs" logger=settings path=/root/grafana/data/log
+t=2020-08-31T13:04:15+0000 lvl=info msg="Path Plugins" logger=settings path=/root/grafana/data/plugins
+t=2020-08-31T13:04:15+0000 lvl=info msg="Path Provisioning" logger=settings path=/root/grafana/conf/provisioning
+t=2020-08-31T13:04:15+0000 lvl=info msg="App mode production" logger=settings
+t=2020-08-31T13:04:15+0000 lvl=info msg="Connecting to DB" logger=sqlstore dbtype=sqlite3
+t=2020-08-31T13:04:15+0000 lvl=info msg="Starting DB migration" logger=migrator
+t=2020-08-31T13:04:15+0000 lvl=info msg="Starting plugin search" logger=plugins
+t=2020-08-31T13:04:15+0000 lvl=info msg="Registering plugin" logger=plugins name="Direct Input"
+t=2020-08-31T13:04:15+0000 lvl=info msg="External plugins directory created" logger=plugins directory=/root/grafana/data/plugins
+t=2020-08-31T13:04:16+0000 lvl=info msg="HTTP Server Listen" logger=http.server address=[::]:3000 protocol=http subUrl= socket=
+t=2020-08-31T13:07:29+0000 lvl=info msg="Shutdown started" logger=server reason="System signal: terminated"
+t=2020-08-31T13:31:55+0000 lvl=info msg="Starting Grafana" logger=server version=7.1.5 commit=9893b8c53d branch=HEAD compiled=2020-08-25T08:27:17+0000
+t=2020-08-31T13:31:56+0000 lvl=info msg="Config loaded from" logger=settings file=/root/grafana/conf/defaults.ini
+t=2020-08-31T13:31:56+0000 lvl=info msg="Path Home" logger=settings path=/root/grafana
+t=2020-08-31T13:31:56+0000 lvl=info msg="Path Data" logger=settings path=/root/grafana/data
+t=2020-08-31T13:31:56+0000 lvl=info msg="Path Logs" logger=settings path=/root/grafana/data/log
+t=2020-08-31T13:31:56+0000 lvl=info msg="Path Plugins" logger=settings path=/root/grafana/data/plugins
+t=2020-08-31T13:31:56+0000 lvl=info msg="Path Provisioning" logger=settings path=/root/grafana/conf/provisioning
+t=2020-08-31T13:31:56+0000 lvl=info msg="App mode production" logger=settings
+t=2020-08-31T13:31:56+0000 lvl=info msg="Connecting to DB" logger=sqlstore dbtype=sqlite3
+t=2020-08-31T13:31:56+0000 lvl=info msg="Starting DB migration" logger=migrator
+t=2020-08-31T13:31:56+0000 lvl=info msg="Starting plugin search" logger=plugins
+t=2020-08-31T13:31:57+0000 lvl=info msg="Registering plugin" logger=plugins name="Direct Input"
+t=2020-08-31T13:31:57+0000 lvl=info msg="HTTP Server Listen" logger=http.server address=[::]:3000 protocol=http subUrl= socket=
