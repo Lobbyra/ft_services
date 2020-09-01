@@ -6,7 +6,7 @@
 #    By: jecaudal <jecaudal@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/26 18:19:41 by jecaudal          #+#    #+#              #
-#    Updated: 2020/08/30 16:34:04 by Lobbyra          ###   ########.fr        #
+#    Updated: 2020/09/01 15:15:38 by jecaudal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,9 @@ spec:
       containers:
       - name: dep-nginx
         image: img-nginx
+        env:
+          - name: SSH_ROOT_PASSWORD
+            value: "gsdfçg!ufd"
         volumeMounts:
         - name: pv-nginx
           mountPath: /www
@@ -37,6 +40,7 @@ spec:
         ports:
         - containerPort: 80
         - containerPort: 443
+        - containerPort: 22
       volumes:
       - name: pv-nginx
         hostPath:
@@ -60,3 +64,7 @@ spec:
       protocol: TCP
       port: 443
       targetPort: 443
+    - name: ssh
+      protocol: TCP
+      port: 22
+      targetPort: 22
