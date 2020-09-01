@@ -6,7 +6,7 @@
 #    By: jecaudal <jecaudal@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/28 15:48:53 by jecaudal          #+#    #+#              #
-#    Updated: 2020/08/31 15:25:24 by jecaudal         ###   ########.fr        #
+#    Updated: 2020/09/01 16:36:29 by jecaudal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,16 +41,16 @@ spec:
       - name: dep-influx
         image: img-influxdb
         env:
-          - name: DB_NAME
-            value: telegraf
           - name: INFLUX_ADM_PASS
-            value: 68R7FR5
+            valueFrom:
+              secretKeyRef:
+                name: global-secret
+                key: influx_admin_pass
           - name: INFLUX_TELE_PASS
-            value: HUGB7T67B
-        resources:
-          limits:
-            memory: "128Mi"
-            cpu: "1"
+            valueFrom:
+              secretKeyRef:
+                name: global-secret
+                key: influx_tele_pass
         volumeMounts:
           - name: pv-influx
             mountPath: /var/lib/influxdb

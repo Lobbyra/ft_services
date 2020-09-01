@@ -6,7 +6,7 @@
 #    By: jecaudal <jecaudal@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/31 16:43:23 by jecaudal          #+#    #+#              #
-#    Updated: 2020/08/31 17:43:59 by jecaudal         ###   ########.fr        #
+#    Updated: 2020/09/01 18:53:02 by jecaudal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,6 +14,8 @@ apiVersion: v1
 kind: Service
 metadata:
   name: svc-wordpress
+  annotations:
+    metallb.universe.tf/allow-shared-ip: share
 spec:
   selector:
     app: dep-wordpress
@@ -41,10 +43,9 @@ spec:
         imagePullPolicy: Never
         env:
           - name: WP_USER_PASS
-            value: 4gf8d64f8g6
-        resources:
-          limits:
-            memory: "128Mi"
-            cpu: "500m"
+            valueFrom:
+              secretKeyRef:
+                name: global-secret
+                key: wp_user_password
         ports:
         - containerPort: 5050

@@ -6,12 +6,9 @@
 #    By: jecaudal <jecaudal@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/24 18:13:13 by jecaudal          #+#    #+#              #
-#    Updated: 2020/08/30 14:05:03 by Lobbyra          ###   ########.fr        #
+#    Updated: 2020/09/01 16:16:32 by jecaudal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
-
-# --- Env Variable
-# GRAPH_ADMIN_PASS <- admin password of grafana admin account (login=admin
 
 FROM	alpine
 

@@ -6,7 +6,7 @@
 #    By: jecaudal <jecaudal@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/31 16:47:01 by jecaudal          #+#    #+#              #
-#    Updated: 2020/08/31 17:02:28 by jecaudal         ###   ########.fr        #
+#    Updated: 2020/09/01 18:52:57 by jecaudal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,13 +29,15 @@ spec:
         imagePullPolicy: Never
         env:
           - name: WP_USER_PASS
-            value: 4gf8d64f8g6
+            valueFrom:
+              secretKeyRef:
+                name: global-secret
+                key: wp_user_password
           - name: ADMIN_PASS
-            value: s4d8fg6fsdfg
-        resources:
-          limits:
-            memory: "128Mi"
-            cpu: "500m"
+            valueFrom:
+              secretKeyRef:
+                name: global-secret
+                key: influx_admin_pass
         ports:
         - containerPort: 3306
 ---

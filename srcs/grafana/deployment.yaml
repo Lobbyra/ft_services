@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    deployment.yaml                                    :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: Lobbyra <jecaudal@student.42.fr>           +#+  +:+       +#+         #
+#    By: jecaudal <jecaudal@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/30 13:53:42 by Lobbyra           #+#    #+#              #
-#    Updated: 2020/08/31 15:25:39 by jecaudal         ###   ########.fr        #
+#    Updated: 2020/09/01 18:30:19 by jecaudal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,10 +26,6 @@ spec:
       containers:
       - name: dep-grafana
         image: img-grafana
-        resources:
-          limits:
-            memory: "512Mi"
-            cpu: "1"
         volumeMounts:
           - name: pv-grafana
             mountPath: /root/grafana/data
@@ -46,6 +42,8 @@ apiVersion: v1
 kind: Service
 metadata:
   name: svc-grafana
+  annotations:
+    metallb.universe.tf/allow-shared-ip: share
 spec:
   selector:
     app: dep-grafana

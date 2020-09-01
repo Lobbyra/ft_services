@@ -230,69 +230,41 @@ printf "✅ : Your configuration is ready !\n"
 
 # Minikube starting
 printf "🤖 : Let's launch this images to the moon ! 🚀 \n"
-printf "🤖 : Minikube will be started : Continue ? (N|[Y]) : "
-read answer
-printf "\n"
-if [ "$answer" != "Y" ] && [ "$answer" != "" ]
+printf "🤖 : Minikube will be started...\n"
+minikube start --vm-driver=virtualbox > /dev/null &
+fun_load_anim $!
+eval $(minikube docker-env)
+kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manifests/namespace.yaml
+kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manifests/metallb.yaml
+if [ "$(kubectl get secrets --namespace metallb-system | grep memberlist)" = "" ]
 then
-	printf "🤖 : You need to start minikube to launch images.\n"
-	exit 0
-else
-	minikube start &
-	fun_load_anim $!
-	eval $(minikube docker-env)
-	#kubectl get configmap kube-proxy -n kube-system -o yaml | \
-	#sed -e "s/strictARP: false/strictARP: true/" | \
-	#kubectl apply -f - -n kube-system
-	#kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manifests/namespace.yaml
-	#kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manifests/metallb.yaml
-	#if [ "$(kubectl get secrets --namespace metallb-system | grep memberlist)" = "" ]
-	#then
-	#	kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)"
-	#fi
-	if [ $? != 0 ]
-	then
-		printf "${Error} : Minikube failed to start. Please solve error(s) and restart the script.\n"
-		exit 1
-	fi
-	printf "✅ : Minikube started !\n"
+	kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)"
 fi
+printf "✅ : Minikube started !\n"
 
 # Docker images creation
 # =============
-printf "🤖 : Docker image will be created : Continue ? (N|[Y]) : "
-read answer
-printf "\n"
-if [ "$answer" != "Y" ] && [ "$answer" != "" ]
-then
-	printf "🤖 : You need this images to start services.\n"
-	exit 0
-else
-	fun_build_images
-	printf "✅ : Images created !\n"
-fi
+printf "🤖 : Docker image will be created..."
+fun_build_images
 
 # =============
 
 # K8s deployements and setup
 # =============
 
-printf "🤖 : Finally let's deploy all this stuff ! : Continue ? (N|[Y]) : "
-read answer
-printf "\n"
-if [ "$answer" != "Y" ] && [ "$answer" != "" ]
-then
-	printf "🤖 : You need to deploy if you want your services.\n"
-	exit 0
-else
-	# kubectl apply -f srcs/metallb-config.yaml
-	kubectl apply -f srcs/nginx/deployment.yaml
-	kubectl apply -f srcs/ftps/deployment.yaml
-	kubectl apply -f srcs/influxdb/deployment.yaml
-	kubectl apply -f srcs/grafana/deployment.yaml
-	fun_pushin_minikube
-	printf "✅ : Deployment finished !\n"
-fi
+printf "🤖 : Finally let's deploy all pods..."
+kubectl apply -f srcs/metallb-config.yaml
+kubectl apply -f setup_srcs/secret.yaml
+arr_img_dir=()
+while IFS= read -r line; do
+	arr_img_dir+=( "$line" )
+done < <(find srcs -d 1 -type d)
+for i in ${arr_img_dir[@]}
+do
+	kubectl apply -f $i
+done
+fun_pushin_minikube
+printf "✅ : Deployment finished !\n"
 
 #-Secret file creation and applyment
 #-Deployements of pods

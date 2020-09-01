@@ -6,7 +6,7 @@
 #    By: jecaudal <jecaudal@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/30 18:02:48 by Lobbyra           #+#    #+#              #
-#    Updated: 2020/08/30 18:12:40 by Lobbyra          ###   ########.fr        #
+#    Updated: 2020/09/01 18:30:07 by jecaudal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,10 +26,14 @@ spec:
       containers:
       - name: dep-ftps
         image: img-ftps
-        resources:
-          limits:
-            memory: "512Mi"
-            cpu: "500m"
+        env:
+          - name: FTPS_USER
+            value: michel
+          - name: FTPS_PASS
+            valueFrom:
+              secretKeyRef:
+                name: global-secret
+                key: ftps_pass
         volumeMounts:
           - name: pv-ftps
             mountPath: /ftp
@@ -52,6 +56,8 @@ apiVersion: v1
 kind: Service
 metadata:
   name: svc-ftps
+  annotations:
+    metallb.universe.tf/allow-shared-ip: share
 spec:
   selector:
     app: dep-ftps
