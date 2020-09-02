@@ -6,7 +6,7 @@
 #    By: jecaudal <jecaudal@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/26 18:19:41 by jecaudal          #+#    #+#              #
-#    Updated: 2020/09/01 18:30:31 by jecaudal         ###   ########.fr        #
+#    Updated: 2020/09/01 21:41:42 by jecaudal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,8 +50,6 @@ apiVersion: v1
 kind: Service
 metadata:
   name: svc-nginx
-  annotations:
-    metallb.universe.tf/allow-shared-ip: share
 spec:
   selector:
     app: dep-nginx

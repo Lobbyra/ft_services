@@ -6,7 +6,7 @@
 #    By: jecaudal <jecaudal@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/31 16:43:23 by jecaudal          #+#    #+#              #
-#    Updated: 2020/09/01 18:53:02 by jecaudal         ###   ########.fr        #
+#    Updated: 2020/09/01 21:41:54 by jecaudal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,8 +14,6 @@ apiVersion: v1
 kind: Service
 metadata:
   name: svc-wordpress
-  annotations:
-    metallb.universe.tf/allow-shared-ip: share
 spec:
   selector:
     app: dep-wordpress
