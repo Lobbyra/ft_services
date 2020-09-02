@@ -6,7 +6,7 @@
 #    By: jecaudal <jecaudal@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/24 12:28:41 by jecaudal          #+#    #+#              #
-#    Updated: 2020/09/01 12:24:43 by jecaudal         ###   ########.fr        #
+#    Updated: 2020/09/01 22:05:11 by jecaudal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,5 +36,5 @@ chown $FTPS_USER:$FTPS_USER /ftp/$FTPS_USER
 
 # -- Start FTP server ---
 printf "FTPS server is starting !\n"
-exec /usr/sbin/vsftpd -opasv_min_port=21000 -opasv_max_port=21004 /etc/vsftpd/vsftpd.conf &
+exec /usr/sbin/vsftpd -opasv_min_port=21000 -opasv_max_port=21004 -opasv_address=192.168.99.232 /etc/vsftpd/vsftpd.conf &
 tail -F /dev/null
