@@ -230,8 +230,7 @@ printf "✅ : Your configuration is ready !\n"
 # Minikube starting
 printf "🤖 : Let's launch this images to the moon ! 🚀 \n"
 printf "🤖 : Minikube will be started...\n"
-minikube start --vm-driver=virtualbox > /dev/null &
-fun_load_anim $!
+
 eval $(minikube docker-env)
 kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manifests/namespace.yaml
 kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manifests/metallb.yaml
