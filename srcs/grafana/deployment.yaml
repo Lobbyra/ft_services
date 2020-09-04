@@ -6,10 +6,24 @@
 #    By: jecaudal <jecaudal@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/30 13:53:42 by Lobbyra           #+#    #+#              #
-#    Updated: 2020/09/01 21:41:37 by jecaudal         ###   ########.fr        #
+#    Updated: 2020/09/04 09:42:55 by jecaudal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-grafana
+  namespace: default
+  labels:
+    app: pvc-grafana
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -34,9 +48,8 @@ spec:
         - containerPort: 3000
       volumes:
       - name: pv-grafana
-        hostPath:
-          path: /mnt/grafana
-          type: Directory
+        persistentVolumeClaim:
+            claimName: pvc-grafana
 ---
 apiVersion: v1
 kind: Service
