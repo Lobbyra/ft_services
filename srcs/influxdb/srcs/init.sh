@@ -6,7 +6,7 @@
 #    By: jecaudal <jecaudal@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/25 18:06:13 by jecaudal          #+#    #+#              #
-#    Updated: 2020/09/01 11:57:01 by jecaudal         ###   ########.fr        #
+#    Updated: 2020/09/02 14:17:57 by jecaudal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,6 +25,4 @@ CREATE USER user_telegraf WITH PASSWORD '$INFLUX_TELE_PASS';
 GRANT ALL ON telegraf TO user_telegraf;
 EOF
 
-envsubst '${INFLUX_TELE_PASS}' < /root/telegraf.conf > /etc/telegraf/telegraf.conf
 
-telegraf

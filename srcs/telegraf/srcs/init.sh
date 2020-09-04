@@ -5,14 +5,9 @@
 #                                                     +:+ +:+         +:+      #
 #    By: jecaudal <jecaudal@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2020/08/26 15:20:54 by jecaudal          #+#    #+#              #
-#    Updated: 2020/09/04 09:51:37 by jecaudal         ###   ########.fr        #
+#    Created: 2020/09/02 14:17:57 by jecaudal          #+#    #+#              #
+#    Updated: 2020/09/02 15:09:00 by jecaudal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-set -x
-
-cd /root/grafana/bin/
-./grafana-server &
-
-tail -F /dev/null
+telegraf --config /root/telegraf.conf
