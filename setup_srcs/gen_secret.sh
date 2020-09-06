@@ -20,23 +20,21 @@ function generator ()
 {
 	sed=$1
 	nsecret=6
-	if [ ! -f secret.yaml ]
+	if [ ! -f setup_srcs/secret.yaml ]
 	then
-		cp secret_model.yaml secret.yaml
+		cp setup_srcs/secret_model.yaml setup_srcs/secret.yaml
 	fi
 	for i in $(seq 1 $nsecret)
 	do
 		password=$(openssl rand -base64 32 | tr -dc _A-Z-a-z-0-9 | base64 )
 		sedpayload=s/\$$i/$password/g
 		sedpayload=$sedpayload
-		$sed -i "$sedpayload" secret.yaml
+		$sed -i "$sedpayload" setup_srcs/secret.yaml
 	done
 } 
 
 function main ()
 {
-	nsecrets=6
-	
 	if [ "$1" = "42mac" ]
 	then
 		gsed &> /dev/null
@@ -50,11 +48,10 @@ function main ()
 			fi
 		fi
 		generator "gsed"
-	elif [ "$2" = "42linux" ]
+	elif [ "$1" = "42linux" ]
 	then
 		generator "sed"
 	fi
-	
 }
 
 main $1

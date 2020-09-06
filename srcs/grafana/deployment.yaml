@@ -6,7 +6,7 @@
 #    By: jecaudal <jecaudal@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/30 13:53:42 by Lobbyra           #+#    #+#              #
-#    Updated: 2020/09/04 09:42:55 by jecaudal         ###   ########.fr        #
+#    Updated: 2020/09/04 18:37:00 by jecaudal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ metadata:
   name: pvc-grafana
   namespace: default
   labels:
-    app: pvc-grafana
+    app: dep-grafana
 spec:
   accessModes:
   - ReadWriteOnce
@@ -40,6 +40,12 @@ spec:
       containers:
       - name: dep-grafana
         image: img-grafana
+        env:
+          - name: INFLUXDB_TELE_PASS
+            valueFrom:
+              secretKeyRef:
+                name: global-secret
+                key: influxdb_tele_pass
         volumeMounts:
           - name: pv-grafana
             mountPath: /root/grafana/data

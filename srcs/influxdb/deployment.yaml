@@ -6,17 +6,17 @@
 #    By: jecaudal <jecaudal@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/28 15:48:53 by jecaudal          #+#    #+#              #
-#    Updated: 2020/09/01 16:36:29 by jecaudal         ###   ########.fr        #
+#    Updated: 2020/09/04 18:22:15 by jecaudal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: pvc-influx
+  name: pvc-influxdb
   namespace: default
   labels:
-    app: pvc-influx
+    app: dep-influxdb
 spec:
   accessModes:
   - ReadWriteOnce
@@ -27,49 +27,49 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: dep-influx
+  name: dep-influxdb
 spec:
   selector:
     matchLabels:
-      app: dep-influx
+      app: dep-influxdb
   template:
     metadata:
       labels:
-        app: dep-influx
+        app: dep-influxdb
     spec:
       containers:
-      - name: dep-influx
+      - name: dep-influxdb
         image: img-influxdb
         env:
-          - name: INFLUX_ADM_PASS
+          - name: INFLUXDB_ADM_PASS
             valueFrom:
               secretKeyRef:
                 name: global-secret
-                key: influx_admin_pass
-          - name: INFLUX_TELE_PASS
+                key: influxdb_admin_pass
+          - name: INFLUXDB_TELE_PASS
             valueFrom:
               secretKeyRef:
                 name: global-secret
-                key: influx_tele_pass
+                key: influxdb_tele_pass
         volumeMounts:
-          - name: pv-influx
+          - name: pv-influxdb
             mountPath: /var/lib/influxdb
         imagePullPolicy: Never
         ports:
         - containerPort: 8086
       volumes:
-        - name: pv-influx
+        - name: pv-influxdb
           persistentVolumeClaim:
-            claimName: pvc-influx
+            claimName: pvc-influxdb
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: svc-influx
+  name: svc-influxdb
 spec:
   type: ClusterIP
   selector:
-    app: dep-influx
+    app: dep-influxdb
   ports:
   - name: port-influxdb
     port: 8086

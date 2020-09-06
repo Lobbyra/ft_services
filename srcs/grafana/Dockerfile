@@ -6,7 +6,7 @@
 #    By: jecaudal <jecaudal@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/24 18:13:13 by jecaudal          #+#    #+#              #
-#    Updated: 2020/09/04 12:40:48 by jecaudal         ###   ########.fr        #
+#    Updated: 2020/09/04 18:33:55 by jecaudal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,8 @@ RUN		cd /tmp \
 		&& wget https://dl.grafana.com/oss/release/grafana-7.1.5.linux-amd64.tar.gz \
 		&& tar -zxvf grafana-7.1.5.linux-amd64.tar.gz \
 		&& mv grafana-7.1.5 grafana \
-		&& mv grafana /root
+		&& mv grafana /root \
+		&& mv /root/datasources.yaml /root/grafana/conf/provisioning/datasources
 
 # Installation
 RUN		ln -s /root/grafana/bin/grafana-cli /usr/bin \

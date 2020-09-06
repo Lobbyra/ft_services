@@ -86,12 +86,32 @@ function parsing_arg ()
 
 function deploy_metallb ()
 {
-	kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manifests/namespace.yaml
-	kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manifests/metallb.yaml
+	kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manifests/namespace.yaml > /dev/null
+	kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manifests/metallb.yaml > /dev/null
 	if [ "$(kubectl get secrets --namespace metallb-system | grep memberlist)" = "" ]
 	then
-		kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)"
+		kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)" > /dev/null
 	fi
+	if [ $? = "42mac" ]
+	then
+		kubectl apply -f srcs/metallb-config-mac.yaml > /dev/null
+	else
+		kubectl apply -f srcs/metallb-config-linux.yaml > /dev/null
+	fi
+}
+
+function load_anim ()
+{
+	spin='-\|/'
+	i=0
+
+	while kill -0 $1 2>/dev/null
+	do
+	  i=$(( (i+1) %4 ))
+	  printf "\r${spin:$i:1}"
+	  sleep .1
+	done
+	printf "\b"
 }
 
 function main ()
@@ -101,11 +121,13 @@ function main ()
 	printf "🤖 : Dependances checking.\n"
 	setup_srcs/dependancer.sh $1
 	printf "🤖 : Minikube will be started...\n"
-	minikube start --vm-driver=virtualbox > /dev/null &
-	fun_load_anim $!
-	setup_srcs/gen_secret.sh
-	deploy_metallb
-	setup_srcs/deploy_all.sh
+	eval $(minikube docker-env)
+	minikube start --vm-driver=virtualbox
+	setup_srcs/gen_secret.sh $1
+	deploy_metallb $?
+	setup_srcs/docker_build.sh
+	setup_srcs/deploy_all.sh $1
+	setup_srcs/print_informations.sh
 }
 
 main $1 $2 $3
