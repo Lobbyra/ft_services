@@ -18,9 +18,16 @@ function docker_build ()
 {
 	eval $(minikube docker-env)
 	arr_img_dir=()
-	while IFS= read -r line; do
-		arr_img_dir+=( "$line" )
-	done < <(find srcs/ -maxdepth 1 -type d | cut -d $'\n' -f 2-22)
+	if [ "$1" = "42mac" ]
+	then
+		while IFS= read -r line; do
+			arr_img_dir+=( "$line" )
+		done < <(find srcs -d 1 -type d)
+	else
+		while IFS= read -r line; do
+			arr_img_dir+=( "$line" )
+		done < <(find srcs -maxdepth 1 -type d | cut -d $'\n' -f 2-22)
+	fi
 	for i in ${arr_img_dir[@]}
 	do
 		printf "🐳 : Building $(echo $i | cut -d "/" -f 2) image.\n"
@@ -29,4 +36,4 @@ function docker_build ()
 	done
 }
 
-docker_build
+docker_build $1

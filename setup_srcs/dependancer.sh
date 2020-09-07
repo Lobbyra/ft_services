@@ -121,8 +121,8 @@ function config_docker ()
 function check_docker_install ()
 {
 	# Is installed ?
-	docker &> /dev/null
-	if [ $? = 127 ]
+	where docker &> /dev/null
+	if [ $? = 1 ]
 	then
 		printf "${Error} : Docker is not installed.\n"
 		printf "${Note} : Please install it via managed software center.\n"
@@ -132,39 +132,28 @@ function check_docker_install ()
 	config_docker
 }
 
-function timeout_docker ()
-{
-	sleep 90
-	printf "${Warning} : Docker startup timed out. It will be killed.\n"
-	printf "${Note} : That's not a problem that this script can solve.\n"
-	kill $(ps -A | grep /Applications/Docker.app/Contents/MacOS/Docker | head -1 | cut -d " " -f 1) &> /dev/null
-	exit
-}
-
 function check_docker_status ()
 {
 	# Docker Start
 	printf "🤖 : Docker starting... (May take a long minute)\n"
 	docker ps &> /dev/null
-	if [ $? != 0 ]
+	if [ $? = 1 ]
 	then
 		open /Applications/Docker.app
 	fi
 
 	# Wait until Docker is nicely launched with time out
-	timeout_docker &
-	TO=$!
-	printf "Check : "
-	docker ps &> /dev/null
-	while [ $? != "0" ]
+	while [ 1 = 1 ]
 	do
-		printf "Docker not started ($?).\n"
-		sleep 1
-		printf "Check : "
 		docker ps &> /dev/null
+		if [ "$?" = "0" ]
+		then
+			printf "✅ : Docker started !\n"
+			return 0
+		fi
+		sleep 2
+		printf "Loading...\n"
 	done
-	kill $TO > /dev/null
-	printf "✅ : Docker started !\n"
 }
 
 function setup_docker ()

@@ -127,9 +127,14 @@ function main ()
 	minikube addons enable metrics-server
 	setup_srcs/gen_secret.sh $1
 	deploy_metallb $1
-	setup_srcs/docker_build.sh
+	setup_srcs/docker_build.sh $1
 	setup_srcs/deploy_all.sh $1
 	setup_srcs/print_informations.sh
+	minikube dashboard
+	if [ $? != 0]
+	then
+		minikube dashboard
+	fi
 }
 
 main $1 $2 $3

@@ -6,7 +6,7 @@
 #    By: jecaudal <jecaudal@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/24 18:13:13 by jecaudal          #+#    #+#              #
-#    Updated: 2020/09/06 16:03:24 by jecaudal         ###   ########.fr        #
+#    Updated: 2020/09/07 15:18:22 by jecaudal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,6 +25,7 @@ RUN		cd /tmp \
 		&& mv grafana-7.1.5 grafana \
 		&& mv grafana /root \
 		&& mv /root/datasources.yaml /root/grafana/conf/provisioning/datasources \
+		&& mv /root/dashboard.yaml /root/grafana/conf/provisioning/dashboards \
 		&& mv /root/dashboard.json /root/grafana/conf/provisioning/dashboards \
 		&& apk add curl
 
