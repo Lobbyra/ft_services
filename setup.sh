@@ -80,7 +80,7 @@ function deploy_metallb ()
 	then
 		kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)" > /dev/null
 	fi
-	if [ $? = "42mac" ]
+	if [ $1 = "42mac" ]
 	then
 		kubectl apply -f srcs/metallb-config-mac.yaml > /dev/null
 	else
@@ -118,6 +118,7 @@ function main ()
 		minikube start --vm-driver=virtualbox
 		exit_checker $?
 	else
+		echo "user42\nuser42" | sudo -S chmod 666 /var/run/docker.sock
 		minikube start --vm-driver=docker
 		exit_checker $?
 	fi
@@ -125,7 +126,7 @@ function main ()
 	minikube addons enable logviewer
 	minikube addons enable metrics-server
 	setup_srcs/gen_secret.sh $1
-	deploy_metallb $?
+	deploy_metallb $1
 	setup_srcs/docker_build.sh
 	setup_srcs/deploy_all.sh $1
 	setup_srcs/print_informations.sh
