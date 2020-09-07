@@ -6,7 +6,7 @@
 #    By: jecaudal <jecaudal@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/24 17:29:14 by jecaudal          #+#    #+#              #
-#    Updated: 2020/08/31 17:04:43 by jecaudal         ###   ########.fr        #
+#    Updated: 2020/09/06 16:26:35 by jecaudal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,6 +28,8 @@ mysql --user=root << EOF
   GRANT ALL ON *.* TO 'admin'@'%' IDENTIFIED BY '$ADMIN_PASS' WITH GRANT OPTION;
   FLUSH PRIVILEGES;
 EOF
+
+mysql --user=root wordpress < /root/wordpress.sql
 
 printf "Database started !\n"
 

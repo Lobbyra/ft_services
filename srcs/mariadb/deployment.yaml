@@ -6,10 +6,24 @@
 #    By: jecaudal <jecaudal@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/31 16:47:01 by jecaudal          #+#    #+#              #
-#    Updated: 2020/09/01 18:52:57 by jecaudal         ###   ########.fr        #
+#    Updated: 2020/09/06 17:52:19 by jecaudal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-maria
+  namespace: default
+  labels:
+    app: dep-maria
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -27,6 +41,13 @@ spec:
       - name: dep-mariadb
         image: img-mariadb
         imagePullPolicy: Never
+        livenessProbe:
+          exec:
+            command:
+            - /bin/ash
+            - /root/livenessprobe.sh
+          initialDelaySeconds: 5
+          periodSeconds: 5
         env:
           - name: WP_USER_PASS
             valueFrom:
@@ -37,9 +58,16 @@ spec:
             valueFrom:
               secretKeyRef:
                 name: global-secret
-                key: influx_admin_pass
+                key: maria_admin_pass
+        volumeMounts:
+          - name: pv-maria
+            mountPath: /var/lib/mysql
         ports:
         - containerPort: 3306
+      volumes:
+        - name: pv-maria
+          persistentVolumeClaim:
+            claimName: pvc-maria
 ---
 apiVersion: v1
 kind: Service

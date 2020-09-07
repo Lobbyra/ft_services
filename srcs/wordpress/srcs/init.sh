@@ -6,7 +6,7 @@
 #    By: jecaudal <jecaudal@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/25 13:09:05 by jecaudal          #+#    #+#              #
-#    Updated: 2020/08/31 17:33:09 by jecaudal         ###   ########.fr        #
+#    Updated: 2020/09/06 18:51:54 by jecaudal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -57,3 +57,5 @@ require_once(ABSPATH . 'wp-settings.php');
 EOF
 
 php -S 0.0.0.0:5050 -t /srv/www/wordpress/wordpress
+
+tail -f /dev/null

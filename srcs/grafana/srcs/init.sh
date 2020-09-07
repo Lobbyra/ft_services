@@ -6,13 +6,11 @@
 #    By: jecaudal <jecaudal@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/26 15:20:54 by jecaudal          #+#    #+#              #
-#    Updated: 2020/09/04 09:51:37 by jecaudal         ###   ########.fr        #
+#    Updated: 2020/09/06 18:08:15 by jecaudal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 set -x
 
 cd /root/grafana/bin/
-./grafana-server &
-
-tail -F /dev/null
+./grafana-server

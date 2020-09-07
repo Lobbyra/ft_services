@@ -1,17 +1,5 @@
 #! /bin/bash
 
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    dependancer.sh                                     :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: jecaudal <jecaudal@student.42.fr>          +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2020/09/04 11:28:23 by jecaudal          #+#    #+#              #
-#    Updated: 2020/09/04 11:49:30 by jecaudal         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
-
 # --- DEFINE PART ---
 # ===========================================
 NC="\033[0m"
@@ -149,7 +137,7 @@ function timeout_docker ()
 	sleep 90
 	printf "${Warning} : Docker startup timed out. It will be killed.\n"
 	printf "${Note} : That's not a problem that this script can solve.\n"
-	kill $(ps -A | grep /Applications/Docker.app/Contents/MacOS/Docker | head -1 | cut -d " " -f 1)
+	kill $(ps -A | grep /Applications/Docker.app/Contents/MacOS/Docker | head -1 | cut -d " " -f 1) &> /dev/null
 	exit
 }
 
@@ -166,14 +154,17 @@ function check_docker_status ()
 	# Wait until Docker is nicely launched with time out
 	timeout_docker &
 	TO=$!
+	printf "Check : "
 	docker ps &> /dev/null
-	while [ $? != 0 ]
+	while [ $? != "0" ]
 	do
+		printf "Docker not started ($?).\n"
 		sleep 1
+		printf "Check : "
 		docker ps &> /dev/null
 	done
-	kill $TO
-	printf "✅ : Docker is nicely started !\n"
+	kill $TO > /dev/null
+	printf "✅ : Docker started !\n"
 }
 
 function setup_docker ()

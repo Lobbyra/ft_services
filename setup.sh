@@ -1,16 +1,4 @@
-
-
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    setup.sh                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: jecaudal <jecaudal@student.42.fr>          +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2020/09/04 09:38:15 by jecaudal          #+#    #+#              #
-#    Updated: 2020/09/04 11:18:18 by jecaudal         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
+#! /bin/bash
 
 # ===========================================
 NC="\033[0m"			# No Color
@@ -119,10 +107,25 @@ function main ()
 	parsing_arg $1 $2 $3
 	exit_checker $?
 	printf "🤖 : Dependances checking.\n"
+	sleep 1
 	setup_srcs/dependancer.sh $1
+	printf "🤖 : Minikube clean up...\n"
+	minikube delete 2> /dev/null
+	sleep 1
 	printf "🤖 : Minikube will be started...\n"
-	eval $(minikube docker-env)
+	sleep 1
 	minikube start --vm-driver=virtualbox
+	eval $(minikube docker-env)
+	if [ $? != 0 ]
+	then 
+		printf "🤖 : Minikube failed to start, but will try again...\n"
+		sleep 1
+		minikube delete
+		minikube start --vm-driver=virtualbox
+		minikube addons enable logviewer
+		minikube addons enable metrics-server
+		exit_checker $?
+	fi
 	setup_srcs/gen_secret.sh $1
 	deploy_metallb $?
 	setup_srcs/docker_build.sh

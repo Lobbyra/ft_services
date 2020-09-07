@@ -1,17 +1,5 @@
 #! /bin/bash
 
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    deploy_all.sh                                      :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: jecaudal <jecaudal@student.42.fr>          +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2020/09/04 14:01:37 by jecaudal          #+#    #+#              #
-#    Updated: 2020/09/04 16:22:16 by jecaudal         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
-
 services[0]="ftps"
 services[1]="grafana"
 services[2]="nginx"
@@ -67,12 +55,13 @@ function rename_ftps_init ()
 function deploy_all ()
 {
 	rename_ftps_init $1
+	mount_local_volumes
+	kubectl apply -f setup_srcs/secret.yaml
 	for i in $(seq 0 7)
 	do
 		kubectl apply -f srcs/${services[$i]} > /dev/null
 		printf "🤖 : ${services[$i]} deployed.\n"
 	done
-	mount_local_volumes
 	printf "✅ : All services are deployed in k8s !.\n"
 }
 

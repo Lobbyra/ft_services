@@ -6,7 +6,7 @@
 #    By: jecaudal <jecaudal@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/28 15:48:53 by jecaudal          #+#    #+#              #
-#    Updated: 2020/09/04 18:22:15 by jecaudal         ###   ########.fr        #
+#    Updated: 2020/09/06 18:08:04 by jecaudal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,6 +51,13 @@ spec:
               secretKeyRef:
                 name: global-secret
                 key: influxdb_tele_pass
+        livenessProbe:
+          exec:
+            command:
+            - /bin/ash
+            - /root/livenessprobe.sh
+          initialDelaySeconds: 5
+          periodSeconds: 5
         volumeMounts:
           - name: pv-influxdb
             mountPath: /var/lib/influxdb
@@ -58,9 +65,9 @@ spec:
         ports:
         - containerPort: 8086
       volumes:
-        - name: pv-influxdb
-          persistentVolumeClaim:
-            claimName: pvc-influxdb
+      - name: pv-influxdb
+        persistentVolumeClaim:
+          claimName: pvc-influxdb
 ---
 apiVersion: v1
 kind: Service

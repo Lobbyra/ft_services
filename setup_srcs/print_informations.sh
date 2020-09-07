@@ -1,14 +1,4 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    print_informations.sh                              :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: jecaudal <jecaudal@student.42.fr>          +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2020/09/04 15:50:41 by jecaudal          #+#    #+#              #
-#    Updated: 2020/09/04 17:26:07 by jecaudal         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
+#! /bin/bash
 
 # --- STEPS ---
 # Print all services with their IPs
@@ -24,31 +14,31 @@ function print_passwords ()
 {
 	if [ $1 = "ftps" ]
 	then
-		pass="$(cat setup_srcs/secret.yaml | grep ftps_pass | cut -d ":" -f 2 | cut -c2- | base64 -d)"
+		pass="$(cat setup_srcs/secret.yaml | grep ftps_pass | cut -d ":" -f 2 | cut -c2- | base64 --decode)"
 		printf "passwords :\n"
 		printf "\tuser\t-> ${Blue}login${NC} = michel\t${Orange}password${NC} = $pass\n"
 	elif [ $1 = "influxdb" ]
 	then
-		pass="$(cat setup_srcs/secret.yaml | grep influx_admin_pass | cut -d ":" -f 2 | cut -c2- | base64 -d)"
+		pass="$(cat setup_srcs/secret.yaml | grep influxdb_admin_pass | cut -d ":" -f 2 | cut -c2- | base64 --decode)"
 		printf "passwords :\n"
 		printf "\tadmin\t-> ${Blue}login${NC} = admin\t${Orange}password${NC} = $pass\n"
-		pass="$(cat setup_srcs/secret.yaml | grep influx_tele_pass | cut -d ":" -f 2 | cut -c2- | base64 -d)"
+		pass="$(cat setup_srcs/secret.yaml | grep influxdb_tele_pass | cut -d ":" -f 2 | cut -c2- | base64 --decode)"
 		printf "\ttelegraf-> ${Blue}login${NC} = user_telegraf${Orange}password${NC} = $pass\n"
 	elif [ $1 = "mariadb" ]
 	then
-		pass="$(cat setup_srcs/secret.yaml | grep maria_admin_pass | cut -d ":" -f 2 | cut -c2- | base64 -d)"
+		pass="$(cat setup_srcs/secret.yaml | grep maria_admin_pass | cut -d ":" -f 2 | cut -c2- | base64 --decode)"
 		printf "passwords :\n"
 		printf "\tadmin\t-> ${Blue}login${NC} = admin\t${Orange}password${NC} = $pass\n"
-		pass="$(cat setup_srcs/secret.yaml | grep wp_user_password | cut -d ":" -f 2 | cut -c2- | base64 -d)"
+		pass="$(cat setup_srcs/secret.yaml | grep wp_user_password | cut -d ":" -f 2 | cut -c2- | base64 --decode)"
 		printf "\twp_user\t-> ${Blue}login${NC} = wp_user\t${Orange}password${NC} = $pass\n"
 	elif [ $1 = "wordpress" ]
 	then
-		pass="$(cat setup_srcs/secret.yaml | grep wp_user_password | cut -d ":" -f 2 | cut -c2- | base64 -d)"
+		pass="$(cat setup_srcs/secret.yaml | grep wp_user_password | cut -d ":" -f 2 | cut -c2- | base64 --decode)"
 		printf "passwords :\n"
 		printf "\twp_user\t-> ${Blue}login${NC} = wp_user\t${Orange}password${NC} = $pass\n"
 	elif [ $1 = "nginx" ]
 	then
-		pass="$(cat setup_srcs/secret.yaml | grep ssh_root_password | cut -d ":" -f 2 | cut -c2- | base64 -d)"
+		pass="$(cat setup_srcs/secret.yaml | grep ssh_root_password | cut -d ":" -f 2 | cut -c2- | base64 --decode)"
 		printf "passwords :\n"
 		printf "\troot\t-> ${Blue}login${NC} = root\t\t${Orange}password${NC} = $pass\n"
 	fi

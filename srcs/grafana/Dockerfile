@@ -6,7 +6,7 @@
 #    By: jecaudal <jecaudal@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/24 18:13:13 by jecaudal          #+#    #+#              #
-#    Updated: 2020/09/04 18:33:55 by jecaudal         ###   ########.fr        #
+#    Updated: 2020/09/06 16:03:24 by jecaudal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ FROM	alpine
 ADD		srcs /root
 
 # Fix libc dependency to run the grafana binary
-
+RUN		mkdir /lib64 && ln -s /lib/libc.musl-x86_64.so.1 /lib64/ld-linux-x86-64.so.2
 
 # --- Grafana Installation
 # Download
@@ -24,7 +24,9 @@ RUN		cd /tmp \
 		&& tar -zxvf grafana-7.1.5.linux-amd64.tar.gz \
 		&& mv grafana-7.1.5 grafana \
 		&& mv grafana /root \
-		&& mv /root/datasources.yaml /root/grafana/conf/provisioning/datasources
+		&& mv /root/datasources.yaml /root/grafana/conf/provisioning/datasources \
+		&& mv /root/dashboard.json /root/grafana/conf/provisioning/dashboards \
+		&& apk add curl
 
 # Installation
 RUN		ln -s /root/grafana/bin/grafana-cli /usr/bin \

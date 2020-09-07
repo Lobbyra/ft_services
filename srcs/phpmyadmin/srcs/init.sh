@@ -6,8 +6,10 @@
 #    By: jecaudal <jecaudal@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/31 17:19:50 by jecaudal          #+#    #+#              #
-#    Updated: 2020/08/31 17:20:07 by jecaudal         ###   ########.fr        #
+#    Updated: 2020/09/06 18:31:15 by jecaudal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 php -S 0.0.0.0:5000 -t /srv/www/phpmyadmin
+
+tail -f /dev/null

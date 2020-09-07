@@ -6,7 +6,7 @@
 #    By: jecaudal <jecaudal@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/24 17:30:42 by jecaudal          #+#    #+#              #
-#    Updated: 2020/08/31 16:51:22 by jecaudal         ###   ########.fr        #
+#    Updated: 2020/09/06 16:00:26 by jecaudal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ FROM	alpine
 
 RUN		apk add mariadb mariadb-client openrc
 
-ADD		srcs/init.sh /root
+ADD		srcs/ /root
 
 EXPOSE	3306
 

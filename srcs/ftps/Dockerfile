@@ -6,7 +6,7 @@
 #    By: jecaudal <jecaudal@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/24 12:12:54 by jecaudal          #+#    #+#              #
-#    Updated: 2020/09/01 12:26:16 by jecaudal         ###   ########.fr        #
+#    Updated: 2020/09/07 11:36:22 by jecaudal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,10 +19,10 @@
 
 FROM	alpine
 
-RUN		apk add vsftpd openssl openrc
+RUN		apk add vsftpd openssl openrc curl
 
 ADD		srcs/vsftpd.conf /etc/vsftpd/
-ADD		srcs/init.sh /root
+ADD		srcs/ /root
 
 EXPOSE	20 21 21000-21004
 

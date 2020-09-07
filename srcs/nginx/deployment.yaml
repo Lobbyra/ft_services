@@ -6,7 +6,7 @@
 #    By: jecaudal <jecaudal@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/26 18:19:41 by jecaudal          #+#    #+#              #
-#    Updated: 2020/09/01 21:41:42 by jecaudal         ###   ########.fr        #
+#    Updated: 2020/09/07 12:24:05 by jecaudal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,13 @@ spec:
       containers:
       - name: dep-nginx
         image: img-nginx
+        livenessProbe:
+            exec:
+              command:
+              - /bin/ash
+              - /tmp/ft_services_payload/livenessprobe.sh
+            initialDelaySeconds: 3
+            periodSeconds: 3
         env:
           - name: SSH_ROOT_PASSWORD
             valueFrom:
@@ -33,8 +40,8 @@ spec:
                 name: global-secret
                 key: ssh_root_password
         volumeMounts:
-        - name: pv-nginx
-          mountPath: /www
+          - name: pv-nginx
+            mountPath: /www
         imagePullPolicy: Never
         ports:
         - containerPort: 80

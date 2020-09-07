@@ -6,7 +6,7 @@
 #    By: jecaudal <jecaudal@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/30 18:02:48 by Lobbyra           #+#    #+#              #
-#    Updated: 2020/09/01 21:41:15 by jecaudal         ###   ########.fr        #
+#    Updated: 2020/09/07 11:41:25 by jecaudal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,6 +34,13 @@ spec:
               secretKeyRef:
                 name: global-secret
                 key: ftps_pass
+        livenessProbe:
+          exec:
+            command:
+            - /bin/ash
+            - /root/livenessprobe.sh
+          initialDelaySeconds: 3
+          periodSeconds: 3
         volumeMounts:
           - name: pv-ftps
             mountPath: /ftp

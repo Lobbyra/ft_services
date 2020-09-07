@@ -6,7 +6,7 @@
 #    By: jecaudal <jecaudal@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/31 16:37:44 by jecaudal          #+#    #+#              #
-#    Updated: 2020/09/01 21:41:48 by jecaudal         ###   ########.fr        #
+#    Updated: 2020/09/06 18:23:24 by jecaudal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,6 +27,15 @@ spec:
       - name: dep-phpmyadmin
         image: img-phpmyadmin
         imagePullPolicy: Never
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 5000
+            httpHeaders:
+            - name: Custom-Header
+              value: Awesome
+          initialDelaySeconds: 3
+          periodSeconds: 3
         resources:
           limits:
             memory: "128Mi"
