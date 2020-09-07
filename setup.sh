@@ -118,7 +118,7 @@ function main ()
 		minikube start --vm-driver=virtualbox
 		exit_checker $?
 	else
-		echo "user42\nuser42" | sudo -S chmod 666 /var/run/docker.sock
+		printf "user42\nuser42" | sudo -S chmod 666 /var/run/docker.sock
 		minikube start --vm-driver=docker
 		exit_checker $?
 	fi
