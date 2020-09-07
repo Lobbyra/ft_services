@@ -28,5 +28,5 @@ chown $FTPS_USER:$FTPS_USER /ftp/$FTPS_USER
 
 # -- Start FTP server ---
 printf "FTPS server is starting !\n"
-exec /usr/sbin/vsftpd -opasv_min_port=21000 -opasv_max_port=21004 -opasv_address=192.168.99.230 /etc/vsftpd/vsftpd.conf &
+exec /usr/sbin/vsftpd -opasv_min_port=21000 -opasv_max_port=21004 -opasv_address=172.17.0.230 /etc/vsftpd/vsftpd.conf &
 tail -F /dev/null

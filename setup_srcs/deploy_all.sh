@@ -20,14 +20,14 @@ Note="📝 ${Grey}Note${NC}"
 Error="❌ ${Red}Error${NC}"
 Warning="❗️ ${Pink}Warning${NC}"
 
-function editor_ftps_address ()
+function generator ()
 {
 	sed=$1
 	if [ "$2" = "42mac" ]
 	then
-		$sed -i "s/172.0.0/192.168.99/g" srcs/ftps/srcs/init.sh
+		$sed -i "s/172.17.0/192.168.99/g" srcs/ftps/srcs/init.sh
 	else
-		$sed -i "s/192.168.99/172.0.0/" srcs/ftps/srcs/init.sh
+		$sed -i "s/192.168.99/172.17.0/" srcs/ftps/srcs/init.sh
 	fi
 } 
 

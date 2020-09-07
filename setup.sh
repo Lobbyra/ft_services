@@ -112,20 +112,18 @@ function main ()
 	printf "🤖 : Minikube clean up...\n"
 	minikube delete 2> /dev/null
 	sleep 1
-	printf "🤖 : Minikube will be started...\n"
-	sleep 1
-	minikube start --vm-driver=virtualbox
-	eval $(minikube docker-env)
-	if [ $? != 0 ]
-	then 
-		printf "🤖 : Minikube failed to start, but will try again...\n"
-		sleep 1
-		minikube delete
+	printf "🤖 : Minikube starting...\n"
+	if [ "$1" = "42mac" ]
+	then
 		minikube start --vm-driver=virtualbox
-		minikube addons enable logviewer
-		minikube addons enable metrics-server
+		exit_checker $?
+	else
+		minikube start --vm-driver=docker
 		exit_checker $?
 	fi
+	eval $(minikube docker-env)
+	minikube addons enable logviewer
+	minikube addons enable metrics-server
 	setup_srcs/gen_secret.sh $1
 	deploy_metallb $?
 	setup_srcs/docker_build.sh
