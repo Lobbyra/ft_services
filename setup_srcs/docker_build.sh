@@ -14,8 +14,43 @@ function load_anim ()
 	printf "\b"
 }
 
+function ftps_ip_assign_exec ()
+{
+	sed=$1
+	if [ "$2" = "42mac" ]
+	then
+		$sed -i "s/172.17.0/192.168.99/g" srcs/ftps/srcs/init.sh
+		$sed -i "s/172.17.0/192.168.99/g" srcs/mariadb/srcs/wordpress.sql
+	else
+		$sed -i "s/192.168.99/172.17.0/" srcs/ftps/srcs/init.sh
+		$sed -i "s/192.168.99/172.17.0/g" srcs/mariadb/srcs/wordpress.sql
+	fi
+}
+
+function ip_assign ()
+{
+	if [ "$1" = "42mac" ]
+	then
+		gsed &> /dev/null
+		if [ $? = 127 ]
+		then
+			brew install gnu-sed > /dev/null
+			if [ $? != 0 ]
+			then
+				printf "${Error} : Error while installing script dependance, please check logs.\n"
+				return 1
+			fi
+		fi
+		ip_assign_configs "gsed" $1
+	elif [ "$2" = "42linux" ]
+	then
+		ip_assign_configs "sed" $1
+	fi
+}
+
 function docker_build ()
 {
+	ip_assign $1
 	eval $(minikube docker-env)
 	arr_img_dir=()
 	if [ "$1" = "42mac" ]
