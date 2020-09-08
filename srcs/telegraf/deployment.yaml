@@ -6,7 +6,7 @@
 #    By: jecaudal <jecaudal@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/02 14:32:08 by jecaudal          #+#    #+#              #
-#    Updated: 2020/09/02 15:00:33 by jecaudal         ###   ########.fr        #
+#    Updated: 2020/09/08 12:49:08 by jecaudal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,6 +29,13 @@ spec:
         imagePullPolicy: Never
         ports:
         - containerPort: 8125
+        livenessProbe:
+          exec:
+            command:
+            - /bin/ash
+            - /root/livenessprobe.sh
+          initialDelaySeconds: 5
+          periodSeconds: 5
         volumeMounts:
         - name: telegraf-endpoint
           mountPath: "/var/run/docker.sock"

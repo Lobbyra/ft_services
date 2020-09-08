@@ -33,3 +33,13 @@ function deploy_all ()
 }
 
 deploy_all
+
+```
+kubectl exec deploy/dep-nginx -- pkill nginx
+kubectl exec deploy/dep-grafana -- pkill grafana
+kubectl exec deploy/dep-mysql -- pkill mysql     
+kubectl exec deploy/dep-influxdb -- pkill influxdb
+kubectl exec deploy/dep-ftps -- pkill vsftpd
+kubectl exec deploy/dep-phpmyadmin -- pkill php
+kubectl exec deploy/dep-telegraf -- pkill telegraf
+```
