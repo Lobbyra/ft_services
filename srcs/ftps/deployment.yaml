@@ -6,25 +6,26 @@
 #    By: jecaudal <jecaudal@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/30 18:02:48 by Lobbyra           #+#    #+#              #
-#    Updated: 2020/09/07 11:41:25 by jecaudal         ###   ########.fr        #
+#    Updated: 2020/09/08 18:07:21 by jecaudal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
-  name: dep-ftps
+  name: ftps
 spec:
   selector:
     matchLabels:
-      app: dep-ftps
+      app: ftps
+  serviceName: ftps
   template:
     metadata:
       labels:
-        app: dep-ftps
+        app: ftps
     spec:
       containers:
-      - name: dep-ftps
+      - name: ftps
         image: img-ftps
         env:
           - name: FTPS_USER
@@ -65,7 +66,7 @@ metadata:
   name: svc-ftps
 spec:
   selector:
-    app: dep-ftps
+    app: ftps
   type: LoadBalancer
   ports:
     - name: port-ftps-20

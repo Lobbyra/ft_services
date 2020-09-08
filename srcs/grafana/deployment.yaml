@@ -6,7 +6,7 @@
 #    By: jecaudal <jecaudal@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/30 13:53:42 by Lobbyra           #+#    #+#              #
-#    Updated: 2020/09/04 18:37:00 by jecaudal         ###   ########.fr        #
+#    Updated: 2020/09/08 18:06:52 by jecaudal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ metadata:
   name: pvc-grafana
   namespace: default
   labels:
-    app: dep-grafana
+    app: grafana
 spec:
   accessModes:
   - ReadWriteOnce
@@ -25,20 +25,21 @@ spec:
       storage: 1Gi
 ---
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
-  name: dep-grafana
+  name: grafana
 spec:
   selector:
     matchLabels:
-      app: dep-grafana
+      app: grafana
+  serviceName: grafana
   template:
     metadata:
       labels:
-        app: dep-grafana
+        app: grafana
     spec:
       containers:
-      - name: dep-grafana
+      - name: grafana
         image: img-grafana
         env:
           - name: INFLUXDB_TELE_PASS
@@ -63,7 +64,7 @@ metadata:
   name: svc-grafana
 spec:
   selector:
-    app: dep-grafana
+    app: grafana
   type: LoadBalancer
   ports:
     - name: grafana

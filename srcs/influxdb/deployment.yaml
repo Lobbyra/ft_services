@@ -6,7 +6,7 @@
 #    By: jecaudal <jecaudal@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/28 15:48:53 by jecaudal          #+#    #+#              #
-#    Updated: 2020/09/08 16:52:48 by jecaudal         ###   ########.fr        #
+#    Updated: 2020/09/08 18:06:22 by jecaudal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,20 +25,21 @@ spec:
       storage: 1Gi
 ---
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
-  name: dep-influxdb
+  name: influxdb
 spec:
   selector:
     matchLabels:
-      app: dep-influxdb
+      app: influxdb
+  serviceName: influxdb
   template:
     metadata:
       labels:
-        app: dep-influxdb
+        app: influxdb
     spec:
       containers:
-      - name: dep-influxdb
+      - name: influxdb
         image: img-influxdb
         env:
           - name: INFLUXDB_ADM_PASS
@@ -76,7 +77,7 @@ metadata:
 spec:
   type: ClusterIP
   selector:
-    app: dep-influxdb
+    app: influxdb
   ports:
   - name: port-influxdb
     port: 8086

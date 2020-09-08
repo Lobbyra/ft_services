@@ -6,25 +6,26 @@
 #    By: jecaudal <jecaudal@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/02 14:32:08 by jecaudal          #+#    #+#              #
-#    Updated: 2020/09/08 12:49:08 by jecaudal         ###   ########.fr        #
+#    Updated: 2020/09/08 18:02:29 by jecaudal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
-  name: dep-telegraf
+  name: telegraf
 spec:
   selector:
     matchLabels:
-      app: dep-telegraf
+      app: telegraf
+  serviceName: telegraf
   template:
     metadata:
       labels:
-        app: dep-telegraf
+        app: telegraf
     spec:
       containers:
-      - name: dep-telegraf
+      - name: telegraf
         image: img-telegraf
         imagePullPolicy: Never
         ports:
@@ -50,7 +51,7 @@ metadata:
   name: svc-telegraf
 spec:
   selector:
-    app: dep-telegraf
+    app: telegraf
   type: ClusterIP
   ports:
   - port: 8125
@@ -61,7 +62,7 @@ kind: ServiceAccount
 metadata:
   name: account-telegraf
   labels:
-    app: dep-telegraf
+    app: telegraf
 
 ---
 apiVersion: rbac.authorization.k8s.io/v1

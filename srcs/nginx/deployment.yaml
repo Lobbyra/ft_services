@@ -6,25 +6,26 @@
 #    By: jecaudal <jecaudal@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/26 18:19:41 by jecaudal          #+#    #+#              #
-#    Updated: 2020/09/08 16:56:03 by jecaudal         ###   ########.fr        #
+#    Updated: 2020/09/08 18:05:05 by jecaudal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
-  name: dep-nginx
+  name: nginx
 spec:
   selector:
     matchLabels:
-      app: dep-nginx
+      app: nginx
+  serviceName: nginx
   template:
     metadata:
       labels:
-        app: dep-nginx
+        app: nginx
     spec:
       containers:
-      - name: dep-nginx
+      - name: nginx
         image: img-nginx
         livenessProbe:
             exec:
@@ -51,7 +52,7 @@ metadata:
   name: svc-nginx
 spec:
   selector:
-    app: dep-nginx
+    app: nginx
   type: LoadBalancer
   ports:
     - name: http
