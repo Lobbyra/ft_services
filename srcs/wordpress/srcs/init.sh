@@ -6,7 +6,7 @@
 #    By: jecaudal <jecaudal@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/25 13:09:05 by jecaudal          #+#    #+#              #
-#    Updated: 2020/09/06 18:51:54 by jecaudal         ###   ########.fr        #
+#    Updated: 2020/09/08 17:07:18 by jecaudal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ cat << EOF > /srv/www/wp-config.php
 define('DB_NAME', 'wordpress');
 
 /** Utilisateur de la base de données MySQL. */
-define('DB_USER', 'wpuser');
+define('DB_USER', 'wp_user');
 
 /** Mot de passe de la base de données MySQL. */
 define('DB_PASSWORD', '$WP_PASS');

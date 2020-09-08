@@ -6,7 +6,7 @@
 #    By: jecaudal <jecaudal@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/22 16:43:03 by jecaudal          #+#    #+#              #
-#    Updated: 2020/09/08 16:57:14 by jecaudal         ###   ########.fr        #
+#    Updated: 2020/09/08 17:09:44 by jecaudal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ RUN		apk add openrc nginx openssl openssh
 # Moving necessary files
 ADD		srcs/nginx.conf /etc/nginx/
 ADD		srcs/sshd_config /etc/ssh/
-ADD		srcs/index.html /www
+ADD		www/index.html /www
 
 EXPOSE	80 443 22
 
