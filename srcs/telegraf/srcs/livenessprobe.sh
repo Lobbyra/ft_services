@@ -1,6 +1,10 @@
 #! /bin/ash
 
-if [ $(ps | grep telegraf | wc -l) = 2 ]
+ps > liveness.tmp
+cat liveness.tmp | grep telegraf > liveness2.tmp
+ret=$(cat liveness2.tmp | wc -l)
+
+if [ $ret = 1 ]
 then
 	return 0
 else
