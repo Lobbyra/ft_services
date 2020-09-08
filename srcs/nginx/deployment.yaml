@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    deployment.yaml                                    :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jecaudal@student.42.fr <jecaudal>          +#+  +:+       +#+         #
+#    By: jecaudal <jecaudal@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/26 18:19:41 by jecaudal          #+#    #+#              #
-#    Updated: 2020/09/08 12:16:37 by jecaudal@st      ###   ########.fr        #
+#    Updated: 2020/09/08 16:56:03 by jecaudal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,19 +39,11 @@ spec:
               secretKeyRef:
                 name: global-secret
                 key: ssh_root_password
-        volumeMounts:
-          - name: pv-nginx
-            mountPath: /www
         imagePullPolicy: Never
         ports:
         - containerPort: 80
         - containerPort: 443
         - containerPort: 22
-      volumes:
-      - name: pv-nginx
-        hostPath:
-          path: /mnt/nginx
-          type: Directory
 ---
 apiVersion: v1
 kind: Service

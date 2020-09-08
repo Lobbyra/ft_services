@@ -6,7 +6,7 @@
 #    By: jecaudal <jecaudal@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/28 15:48:53 by jecaudal          #+#    #+#              #
-#    Updated: 2020/09/06 18:08:04 by jecaudal         ###   ########.fr        #
+#    Updated: 2020/09/08 16:52:48 by jecaudal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ metadata:
   name: pvc-influxdb
   namespace: default
   labels:
-    app: dep-influxdb
+    app: dep-influx
 spec:
   accessModes:
   - ReadWriteOnce

@@ -16,7 +16,6 @@ Warning="❗️ ${Pink}Warning${NC}"
 function mount_local_volumes ()
 {
 	mkdir -p srcs/ftps/ftp &> /dev/null
-	minikube mount srcs/nginx/www:/mnt/nginx &> /dev/null &
 	minikube mount srcs/ftps/ftp:/mnt/ftp &> /dev/null &
 	sleep 5
 }
