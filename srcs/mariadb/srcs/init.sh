@@ -6,7 +6,7 @@
 #    By: jecaudal <jecaudal@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/24 17:29:14 by jecaudal          #+#    #+#              #
-#    Updated: 2020/09/08 16:50:28 by jecaudal         ###   ########.fr        #
+#    Updated: 2020/09/08 17:23:10 by jecaudal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ service mariadb restart &> /dev/null
 mysql --user=root << EOF
   CREATE DATABASE wordpress;
   CREATE USER 'wp_user'@'%' IDENTIFIED BY '$WP_ADMIN_PASS';
-  GRANT ALL ON wordpress.* TO 'wpuser'@'%' IDENTIFIED BY '$WP_USER_PASS' WITH GRANT OPTION;
+  GRANT ALL ON wordpress.* TO 'wp_user'@'%' IDENTIFIED BY '$WP_USER_PASS' WITH GRANT OPTION;
   CREATE USER 'admin'@'%' IDENTIFIED BY '$ADMIN_PASS';
   GRANT ALL ON *.* TO 'admin'@'%' IDENTIFIED BY '$ADMIN_PASS' WITH GRANT OPTION;
   FLUSH PRIVILEGES;
