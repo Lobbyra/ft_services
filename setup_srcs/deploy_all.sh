@@ -18,6 +18,7 @@ function mount_local_volumes ()
 	mkdir -p srcs/ftps/ftp &> /dev/null
 	minikube mount srcs/nginx/www:/mnt/nginx &> /dev/null &
 	minikube mount srcs/ftps/ftp:/mnt/ftp &> /dev/null &
+	sleep 5
 }
 
 function deploy_all ()
@@ -33,13 +34,3 @@ function deploy_all ()
 }
 
 deploy_all
-
-```
-kubectl exec deploy/dep-nginx -- pkill nginx
-kubectl exec deploy/dep-grafana -- pkill grafana
-kubectl exec deploy/dep-mysql -- pkill mysql     
-kubectl exec deploy/dep-influxdb -- pkill influxdb
-kubectl exec deploy/dep-ftps -- pkill vsftpd
-kubectl exec deploy/dep-phpmyadmin -- pkill php
-kubectl exec deploy/dep-telegraf -- pkill telegraf
-```
