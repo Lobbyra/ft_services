@@ -1,5 +1,5 @@
 
-# [OLD] FT_SERVICES
+# FT_SERVICES
 
 ![](https://www.combell.com/fr/blog/files/Kubernetes-Combell-750x256.jpg)
 
