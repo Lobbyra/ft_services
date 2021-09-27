@@ -3,8 +3,6 @@
 
 ![](https://www.combell.com/fr/blog/files/Kubernetes-Combell-750x256.jpg)
 
-⚠ Ce repo ne présente pas la dernière version du sujet.
-
 ---
 
 # Compétences abordées 📚
