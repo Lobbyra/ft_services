@@ -39,29 +39,26 @@ Les services deployés sont :
 # Explications Techniques 🤓
 
 ### Processus de réalisation
-- Developpement de la première version du script pour vérifier les dépendances et les installer si besoins pour les Macs de notre école.
-- Création d'une première version de toutes les images Docker pour faire les tests de leurs bon fonctionnement une par une en local.
+- Développement de la première version du script pour vérifier les dépendances et les installer si besoins pour les PC de notre école.
+- Création d'une première version de toutes les images Docker pour faire les tests de leurs bon fonctionnement en local.
 - Decouverte de Kubernetes par [Minikube][url_minikube].
-- Ecriture des deploiments et tests des images Docker un par un.
-- Ouverture réseau de ces services vers l'exterieur pour pouvoir y accéder en tant que client.
+- Écriture des deploiments et tests des images Docker.
+- Ouverture au réseau de ces services vers l'exterieur pour pouvoir y accéder en tant que client.
 - Automatisation des constructions des images Docker dans le script bash.
 - Automatisation des deploiments dans minikube dans le script bash.
-- Mise en place d'inspection d'état de santé des services appelé [livenessprobe][url_livenessprobe].
+- Mise en place d'inspection d'état de santé des services appelés [livenessprobe][url_livenessprobe].
 - Finitions du script.
 
-### Schema global du projet
-[TO-DO]
-
 ### Details
-Etant donné qu'on se corrige entre élèves, pas sur la même machine, le cluster k8s que l'on doit deployer est dans minikube pour des raisons de practicitées.
+Étant donné qu'on se corrige entre élèves, pas sur la même machine, le cluster k8s que l'on doit deployer est dans minikube pour des raisons de practicitées.
 
-J'ai fais un script pour generer un .yaml de *secrets* avec des mots de passes aléatoires pour ne pas avoir de mots de passes critiques en clairs sur le repo. Ce n'est pas nécessaire mais je trouvais cela intéressant d'aborder de la sécurité.
+J'ai fais un script pour generer un .yaml de *secrets* avec des mots de passes aléatoires pour ne pas avoir de mots de passes critiques en clair sur le repo. Ce n'est pas nécessaire mais je trouvais cela intéressant.
 
-Nginx dispose d'une redirection 301 qui permet une réponse automatique d'une requète HTTP vers HTTPS.
+Nginx dispose d'une redirection 301 qui permet une transformation automatique d'une requète HTTP vers HTTPS.
 
 # Avis personnel du projet 👨🏻‍🔬
 
-> J'ai touvé le projet très intéressant car cela m'a permis de découvrir une technologie prometteuse et revolutionnaire.
+> J'ai touvé le projet très intéressant car cela m'a permis de découvrir cette technologie.
 > 
 > Kubernetes pourrais optimiser la façon dont on met en place des services actuellement et permet de réduire les besoins de maintenance et la consommation de ressources.
 > 
@@ -81,6 +78,4 @@ Nginx dispose d'une redirection 301 qui permet une réponse automatique d'une re
 [url_minikube]: https://kubernetes.io/fr/docs/setup/learning-environment/minikube/
 [url_livenessprobe]: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
 
-Pour toute question n'esitez pas à me contacter via les liens sur mon profil ou sur slack @jecaudal si vous êtes étudiant(e).
-
-Merci d'avoir lu ce read me, des conseils ou corrections sont la bienvenus si vous en avez envie ! 🙏
+Pour toute question n'hésitez pas à me contacter via les liens sur mon profil.
